@@ -1,0 +1,9 @@
+{
+  "name": "miaoBill",
+  "description": "miaoBill",
+  "version": "0.0.1",
+  "dependencies": {
+    "jquery": "*",
+    "bootstrap":"*"
+  }
+}
