@@ -1,2 +1,3 @@
 # miaoBill
-miaoBill
+miaoBill build on cordova 
+
