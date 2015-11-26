@@ -1,0 +1,115 @@
+<div class="container-fluid">
+	<div class="secondHeaderFix">
+		<div class="row secondHeader">
+			<div class="col-xs-6" id="searchBillTime" data-toggle="modal" data-target="#searchBillTimeModal" >账单时间</div>
+			<div class="col-xs-6" id="searchBillType" data-toggle="modal" data-target="#searchBillTypeModal">账单类型</div>
+		</div>
+	</div>
+	<div>
+		<ul>
+			<li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li>
+		</ul>
+	<div>
+</div>
+
+<div class="modal fade" id="searchBillTypeModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+       	<form class="form-inline">
+		  <div class="form-group">
+		    <label for="billType">账单类型:</label>
+		    <select class="form-control" id="billType">
+			  <option>1</option>
+			  <option>2</option>
+			  <option>3</option>
+			  <option>4</option>
+			  <option>5</option>
+			</select>
+		  </div>
+		</form>
+
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" id="searchBillTimeModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+       	<form class="form-horizontal">
+		  <div class="form-group">
+		    <label for="startDate" class="col-xs-3" style="line-height: 30px">时间段:</label>
+		    <div class="col-xs-4">
+		    	<input type="text" class="form-control " id="startDate" readonly="readonly"/>
+		    </div>
+		    <span class="col-xs-1" style="line-height: 30px">至</span>
+		    <div class="col-xs-4">
+		    	<input type="text" class="form-control " id="endDate" readonly="readonly"/>
+		    </div>
+		  </div>
+		  <div class="form-group ">
+		   	<div class="col-xs-12">
+		   		<a class="btn btn-primary btn-block">搜索</a>
+		   	</div>
+		   </div>
+		   <div class="form-group ">
+		   	<div class="col-xs-4">
+		   		<a class="btn btn-primary btn-block">一个月</a>
+		   	</div>
+		   	<div class="col-xs-4">
+		   		<a class="btn btn-primary btn-block">三个月</a>
+		   	</div>
+		   	<div class="col-xs-4">
+		   		<a class="btn btn-primary btn-block">六个月</a>
+		   	</div>
+		   </div>
+		</form>
+
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script>
+	var BillList={
+		initEvent:function(){
+			$("#billType").change(function(event) {
+				BillList.changeBillType(this);
+			});
+		},
+		initTool:function(){
+			$('#startDate').datetimepicker({
+		        language:  'zh-CN',
+		        todayBtn:  1,
+				todayHighlight: 1,
+				startView: 3,
+				minView:3,
+				autoclose:true,
+				format:'yyyy-mm'
+		    });
+		    $('#endDate').datetimepicker({
+		        language:  'zh-CN',
+		        todayBtn:  1,
+				todayHighlight: 1,
+				startView: 3,
+				minView:3,
+				autoclose:true,
+				format:'yyyy-mm'
+		    });
+		    
+		},
+		changeBillType:function(that){
+			$("#searchBillTypeModal").modal('hide');
+			$("#searchBillType").html($(that).val());
+		},
+	}
+	jQuery(document).ready(function($) {
+		BillList.initTool();
+		BillList.initEvent();
+	});
+
+
+
+</script>
