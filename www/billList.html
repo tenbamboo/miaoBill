@@ -1,13 +1,109 @@
-<div class="container-fluid">
+<div class="container-fluid ">
 	<div class="secondHeaderFix">
 		<div class="row secondHeader">
-			<div class="col-xs-6" id="searchBillTime" data-toggle="modal" data-target="#searchBillTimeModal" >账单时间</div>
-			<div class="col-xs-6" id="searchBillType" data-toggle="modal" data-target="#searchBillTypeModal">账单类型</div>
+			<div class="col-xs-6" id="searchBillTime" data-toggle="modal" data-target="#searchBillTimeModal" data-searchTime >账单时间</div>
+			<div class="col-xs-6" id="searchBillType" data-toggle="modal" data-target="#searchBillTypeModal"  >账单类型</div>
 		</div>
 	</div>
-	<div>
-		<ul>
-			<li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li><li>a</li>
+	<div class="billListDiv overflow-x-h">
+		<ul class="billList overflow-x-h">
+			<li>
+				<i class="fa fa-plus-square"></i>
+				<!-- <i class="fa fa-minus-square"></i> -->
+				<div class="billName">收入8000</div>
+				<div class="billTypeAndTime">
+					<div class="fl">网购</div>
+					<div class="fr">2015-11-11</div>
+				</div>
+				<div class="delBill">
+					<i class="fa fa-trash"></i>
+				</div>
+			</li>
+			<li>
+				<!-- <i class="fa fa-plus-square"></i> -->
+				<i class="fa fa-minus-square"></i>
+				<div class="billName">8000</div>
+				<div class="billTypeAndTime">
+					<div class="fl">网购</div>
+					<div class="fr">2015-11-11</div>
+				</div>
+				<div class="delBill">
+					<i class="fa fa-trash"></i>
+				</div>
+			</li>
+			<li>
+				<i class="fa fa-plus-square"></i>
+				<!-- <i class="fa fa-minus-square"></i> -->
+				<div class="billName">收入8000</div>
+				<div class="billTypeAndTime">
+					<div class="fl">网购</div>
+					<div class="fr">2015-11-11</div>
+				</div>
+				<div class="delBill">
+					<i class="fa fa-trash"></i>
+				</div>
+			</li>
+			<li>
+				<!-- <i class="fa fa-plus-square"></i> -->
+				<i class="fa fa-minus-square"></i>
+				<div class="billName">8000</div>
+				<div class="billTypeAndTime">
+					<div class="fl">网购</div>
+					<div class="fr">2015-11-11</div>
+				</div>
+				<div class="delBill">
+					<i class="fa fa-trash"></i>
+				</div>
+			</li>
+			<li>
+				<i class="fa fa-plus-square"></i>
+				<!-- <i class="fa fa-minus-square"></i> -->
+				<div class="billName">收入8000</div>
+				<div class="billTypeAndTime">
+					<div class="fl">网购</div>
+					<div class="fr">2015-11-11</div>
+				</div>
+				<div class="delBill">
+					<i class="fa fa-trash"></i>
+				</div>
+			</li>
+			<li>
+				<!-- <i class="fa fa-plus-square"></i> -->
+				<i class="fa fa-minus-square"></i>
+				<div class="billName">8000</div>
+				<div class="billTypeAndTime">
+					<div class="fl">网购</div>
+					<div class="fr">2015-11-11</div>
+				</div>
+				<div class="delBill">
+					<i class="fa fa-trash"></i>
+				</div>
+			</li>
+			<li>
+				<i class="fa fa-plus-square"></i>
+				<!-- <i class="fa fa-minus-square"></i> -->
+				<div class="billName">收入8000</div>
+				<div class="billTypeAndTime">
+					<div class="fl">网购</div>
+					<div class="fr">2015-11-11</div>
+				</div>
+				<div class="delBill">
+					<i class="fa fa-trash"></i>
+				</div>
+			</li>
+			<li>
+				<!-- <i class="fa fa-plus-square"></i> -->
+				<i class="fa fa-minus-square"></i>
+				<div class="billName">8000</div>
+				<div class="billTypeAndTime">
+					<div class="fl">网购</div>
+					<div class="fr">2015-11-11</div>
+				</div>
+				<div class="delBill">
+					<i class="fa fa-trash"></i>
+				</div>
+			</li>
+
 		</ul>
 	<div>
 </div>
@@ -51,18 +147,18 @@
 		  </div>
 		  <div class="form-group ">
 		   	<div class="col-xs-12">
-		   		<a class="btn btn-primary btn-block">搜索</a>
+		   		<a class="btn btn-primary btn-block" id="searchTimeBtn">搜索</a>
 		   	</div>
 		   </div>
 		   <div class="form-group ">
 		   	<div class="col-xs-4">
-		   		<a class="btn btn-primary btn-block">一个月</a>
+		   		<a class="btn btn-primary btn-block monthTimeBtn"  >一个月</a>
 		   	</div>
 		   	<div class="col-xs-4">
-		   		<a class="btn btn-primary btn-block">三个月</a>
+		   		<a class="btn btn-primary btn-block monthTimeBtn" >三个月</a>
 		   	</div>
 		   	<div class="col-xs-4">
-		   		<a class="btn btn-primary btn-block">六个月</a>
+		   		<a class="btn btn-primary btn-block monthTimeBtn" >六个月</a>
 		   	</div>
 		   </div>
 		</form>
@@ -77,6 +173,16 @@
 		initEvent:function(){
 			$("#billType").change(function(event) {
 				BillList.changeBillType(this);
+			});
+			$("#searchTimeBtn").click(function(){
+				BillList.changeBillTime($("#startDate").val()+"~"+$("#endDate").val())
+			});
+			$(".monthTimeBtn").click(function(){
+				BillList.changeBillTime($(this).html())
+			});
+			$(".billList li").hammer().bind("swipeleft", function (e) {
+				$(".billList li.showDelBtn").removeClass("showDelBtn");
+				$(this).addClass("showDelBtn");
 			});
 		},
 		initTool:function(){
@@ -104,6 +210,10 @@
 			$("#searchBillTypeModal").modal('hide');
 			$("#searchBillType").html($(that).val());
 		},
+		changeBillTime:function(val){
+			$("#searchBillTimeModal").modal('hide');
+			$("#searchBillTime").html(val);
+		}
 	}
 	jQuery(document).ready(function($) {
 		BillList.initTool();

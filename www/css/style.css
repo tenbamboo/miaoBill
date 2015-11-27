@@ -5,8 +5,18 @@
     -webkit-animation-fill-mode: both;
     animation-fill-mode: both;
 }
+.container-fluid{
+	padding:0;
+}
+.row{
+	margin: 0;
+}
 /*lib override end*/
-
+/*tools start*/
+.overflow-x-h{
+	    overflow-x: hidden;
+}
+/*tools end*/
 /*header start*/
 header{
 	background: #337ab7;
@@ -94,13 +104,13 @@ header .rightBtn{
 
 /*billList start*/
 .secondHeaderFix{
-	height: 28px;
+	height: 25px;
 }
 .secondHeader{
 	background-color: #fff;
 	position: fixed;
 	width: 100%;
-	height: 28px;
+	height: 25px;
 }
 .secondHeader div{
 	text-align: center;
@@ -112,5 +122,51 @@ header .rightBtn{
 }
 .secondHeader div:first-child{
 	border-right: 2px solid #337AB7;
+}
+.billList{
+	overflow-y:hidden;
+}
+.billList li{
+	    padding: 10px 0;
+    border-bottom: 2px solid #337AB7;
+    cursor: pointer;
+    transition: all 0.5s;
+    position: relative;
+}
+.billList li.showDelBtn{
+	 transform: translateX(-50px);
+}
+.billList li >.fa {
+	    float: left;
+    font-size: 40px;
+    margin: 0 20px;
+    color: #93c47d;
+}
+.billList li .billName{
+	    margin-top: -2px;
+}
+.billList li .billTypeAndTime{
+	    margin-top: 10px;
+}
+.billList li .billTypeAndTime .fr{
+	margin-right: 10px;
+}
+.billList li .delBill{
+	position: absolute;
+    font-size: 33px;
+    right: -52px;
+    top: 0px;
+    padding: 15px 13px 12px 13px;
+    border-bottom: 2px solid #337AB7;
+    background-color: #B94A4A;
+    color: #FFF;
+}
+.billList li:after {
+    display: table;
+    content: " ";
+    clear: both;
+}
+.billList li:nth-of-type(odd) {
+    background-color: #f9f9f9;
 }
 /*billList end*/
