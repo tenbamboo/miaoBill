@@ -34,7 +34,7 @@ header a{
     position: absolute;
 }
 header a .fa{
-	padding: 10px 10px;
+	padding: 12px 15px;
 }
 header .leftBtn{
 }
@@ -42,12 +42,13 @@ header .rightBtn{
     right: 0;
 }
 .fixHeader{
-	height:36px;
+	height:40px;
 }
 .fixHeader header{
-	height:36px;
+	height:40px;
 	position: fixed;
 	width: 100%;
+    z-index: 22;
 }
 /*header end*/
 /*slideBar start*/
@@ -103,19 +104,21 @@ header .rightBtn{
 /*overlay end */
 
 /*billList start*/
+
 .secondHeaderFix{
-	height: 25px;
+	height: 35px;
 }
 .secondHeader{
 	background-color: #fff;
 	position: fixed;
 	width: 100%;
-	height: 25px;
+	height: 35px;
+    z-index: 22;
 }
 .secondHeader div{
 	text-align: center;
     border-bottom: 2px solid #337AB7;
-    padding: 5px;
+    padding: 10px;
     color: #1F5788;
     cursor: pointer;
     font-size: 13px;
@@ -123,18 +126,32 @@ header .rightBtn{
 .secondHeader div:first-child{
 	border-right: 2px solid #337AB7;
 }
+
+.billListDiv{
+/*    position: absolute;
+    z-index: 1;
+    top: 75px;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: #FFF;
+    overflow: hidden;*/
+}
 .billList{
 	overflow-y:hidden;
 }
 .billList li{
-	    padding: 10px 0;
+	padding: 10px 0;
     border-bottom: 2px solid #337AB7;
     cursor: pointer;
-    transition: all 0.5s;
+    transition: all 0.3s;
+    -webkit-transition: all 0.3s;
     position: relative;
+    background-color: #fff;
 }
 .billList li.showDelBtn{
 	 transform: translateX(-50px);
+     -webkit-transform:translateX(-50px); 
 }
 .billList li >.fa {
 	    float: left;
@@ -160,6 +177,10 @@ header .rightBtn{
     border-bottom: 2px solid #337AB7;
     background-color: #B94A4A;
     color: #FFF;
+    display: none;
+}
+.billList li.showDelBtn .delBill{
+    display: block;
 }
 .billList li:after {
     display: table;

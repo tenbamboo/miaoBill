@@ -1,7 +1,7 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, maximum-scale=1, user-scalable=no">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
 		<meta name="mobile-web-app-capable" content="yes">
 		<meta name="apple-mobile-web-app-capable" content="yes">
 		<meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -23,10 +23,10 @@
 	<body>
 		<div class="fixHeader">
 			<header>
-				<h3>aaaa</h3>
+				<h3></h3>
 				<a class="leftBtn"><i class="fa fa-bars"></i></a>
 				<!-- <i class="fa fa-arrow-left"></i> -->
-				<a class="rightBtn">右btn</a>
+				<a class="rightBtn"></a>
 			</header>
 		</div>
 		<div id="mainContainer">
@@ -54,9 +54,13 @@
 		<script src="./lib/jplusin/jquery.pajax.custom.js"></script>
 		<script src="./lib/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
 		<script src="./lib/bootstrap-datetimepicker/js/bootstrap-datetimepicker.zh-CN.js"></script>
-		<script src="./lib/hammer/hammer.min.js"></script>
-		<script src="./lib/hammer/jquery.hammer.js"></script>
+		 <script src="./lib/hammer/hammer.min.js"></script>
+		 <script src="./lib/hammer/jquery.hammer.js"></script> 
+		<script src="./lib/iscroll.js"></script>
+ <!-- // <script type="text/javascript" src="./lib/jplusin/jquery.touchSwipe.js"></script> -->
 		
+
+
 		<script>
 			jQuery(document).ready(function($) {
 				Index.initTool();
@@ -70,11 +74,8 @@
 					// 	hideOverlay();
 					// });
 					$("header").delegate('.fa-bars', 'click', function(){
-						$(".overlay").show();
-						$(".slideBar").show().removeClass('slideOutLeft').addClass('slideInLeft');
-						$(".overlay").one('click',function(){
-							Index.hideOverlay();
-						})
+						Index.showOverlay(false);
+						$(".slideBar").css({'top':document.body.scrollTop}).show().removeClass('slideOutLeft').addClass('slideInLeft');
 					});
 					$("header").delegate('.fa-arrow-left', 'click', function(){
 						$.pajax('back');
@@ -85,8 +86,19 @@
 						defaultLoad:'billList'
 					});
 				},
+				showOverlay:function(spinnerFlag){
+					if(spinnerFlag){
+						$(".spinner").show();
+					}
+					$(".overlay").height(document.body.scrollHeight).show();
+					$('body').css({'overflow':'hidden'});
+					$(".overlay").one('click',function(){
+							Index.hideOverlay();
+					});
+				},
 				hideOverlay:function(){
 					$(".slideBar").removeClass('slideInLeft').addClass('slideOutLeft'); 
+					$('body').css({'overflow':'auto'})
 					$(".overlay").hide();
 					$(".spinner").hide();
 				}

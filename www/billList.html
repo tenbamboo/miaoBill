@@ -5,8 +5,9 @@
 			<div class="col-xs-6" id="searchBillType" data-toggle="modal" data-target="#searchBillTypeModal"  >账单类型</div>
 		</div>
 	</div>
-	<div class="billListDiv overflow-x-h">
-		<ul class="billList overflow-x-h">
+	<!-- <div id="billListWrapper"> -->
+	<div class="billListDiv ">
+		<ul class="billList ">
 			<li>
 				<i class="fa fa-plus-square"></i>
 				<!-- <i class="fa fa-minus-square"></i> -->
@@ -83,6 +84,18 @@
 				<i class="fa fa-plus-square"></i>
 				<!-- <i class="fa fa-minus-square"></i> -->
 				<div class="billName">收入8000</div>
+				<div class="billTypeAndTime">
+					<div class="fl">网购</div>
+					<div class="fr">2015-11-11</div>
+				</div>
+				<div class="delBill">
+					<i class="fa fa-trash"></i>
+				</div>
+			</li>
+			<li>
+				<!-- <i class="fa fa-plus-square"></i> -->
+				<i class="fa fa-minus-square"></i>
+				<div class="billName">8000</div>
 				<div class="billTypeAndTime">
 					<div class="fl">网购</div>
 					<div class="fr">2015-11-11</div>
@@ -104,11 +117,53 @@
 				</div>
 			</li>
 
+				<li>
+				<!-- <i class="fa fa-plus-square"></i> -->
+				<i class="fa fa-minus-square"></i>
+				<div class="billName">8000</div>
+				<div class="billTypeAndTime">
+					<div class="fl">网购</div>
+					<div class="fr">2015-11-11</div>
+				</div>
+				<div class="delBill">
+					<i class="fa fa-trash"></i>
+				</div>
+			</li>
+			
+
+				<li>
+				<!-- <i class="fa fa-plus-square"></i> -->
+				<i class="fa fa-minus-square"></i>
+				<div class="billName">8000</div>
+				<div class="billTypeAndTime">
+					<div class="fl">网购</div>
+					<div class="fr">2015-11-11</div>
+				</div>
+				<div class="delBill">
+					<i class="fa fa-trash"></i>
+				</div>
+			</li>
+			
+
+				<li>
+				<!-- <i class="fa fa-plus-square"></i> -->
+				<i class="fa fa-minus-square"></i>
+				<div class="billName">8000</div>
+				<div class="billTypeAndTime">
+					<div class="fl">网购</div>
+					<div class="fr">2015-11-11</div>
+				</div>
+				<div class="delBill">
+					<i class="fa fa-trash"></i>
+				</div>
+			</li>
 		</ul>
-	<div>
+	</div>
+
+	<!-- </div> -->
 </div>
 
-<div class="modal fade" id="searchBillTypeModal">
+<div class="modal " id="searchBillTypeModal">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-body">
@@ -130,7 +185,7 @@
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-<div class="modal fade" id="searchBillTimeModal">
+<div class="modal " id="searchBillTimeModal">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-body">
@@ -169,8 +224,14 @@
 </div><!-- /.modal -->
 
 <script>
+
 	var BillList={
+		initHeader:function(){
+			$('header h3').html('我的账单');
+			$('header .rightBtn').html('<i class="fa fa-plus"></i>')
+		},
 		initEvent:function(){
+			// document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
 			$("#billType").change(function(event) {
 				BillList.changeBillType(this);
 			});
@@ -183,7 +244,13 @@
 			$(".billList li").hammer().bind("swipeleft", function (e) {
 				$(".billList li.showDelBtn").removeClass("showDelBtn");
 				$(this).addClass("showDelBtn");
+			}).bind("swiperight", function (e) {
+				$(this).removeClass("showDelBtn");
 			});
+			$(".rightBtn").click(function(){
+
+				
+			})
 		},
 		initTool:function(){
 			$('#startDate').datetimepicker({
@@ -204,6 +271,14 @@
 				autoclose:true,
 				format:'yyyy-mm'
 		    });
+
+		 //    myScroll = new IScroll('.billListDiv', {
+			// 	scrollbars: true,
+			// 	mouseWheel: true,
+			// 	interactiveScrollbars: true,
+			// 	shrinkScrollbars: 'scale',
+			// 	fadeScrollbars: true
+			// });
 		    
 		},
 		changeBillType:function(that){
@@ -216,6 +291,7 @@
 		}
 	}
 	jQuery(document).ready(function($) {
+		BillList.initHeader();
 		BillList.initTool();
 		BillList.initEvent();
 	});
