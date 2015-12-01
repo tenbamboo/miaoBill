@@ -223,6 +223,18 @@
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
+<div class=" customDialog animated" id="billDetail">
+
+	<form>
+
+
+
+	</form>
+	<a id="closeDialog" class="btn btn-default">关闭</a>
+</div>
+
+
+
 <script>
 
 	var BillList={
@@ -248,9 +260,14 @@
 				$(this).removeClass("showDelBtn");
 			});
 			$(".rightBtn").click(function(){
-
+				BillList.showCustomDialog();
 				
-			})
+			});
+			$("#closeDialog").click(function(){
+				BillList.hideCustomDialog();
+				
+			});
+			
 		},
 		initTool:function(){
 			$('#startDate').datetimepicker({
@@ -288,6 +305,21 @@
 		changeBillTime:function(val){
 			$("#searchBillTimeModal").modal('hide');
 			$("#searchBillTime").html(val);
+		},
+		showCustomDialog:function(){
+			$(".customDialog").css({'top':document.body.scrollTop}).show().removeClass('slideOutDown').addClass('slideInUp'); 
+			$('body').css({'overflow':'hidden'});
+		},
+		hideCustomDialog:function(){
+			Q.fcall(function(){
+				$(".customDialog").removeClass('slideInUp').addClass('slideOutDown');
+				var deferred = Q.defer();
+			    setTimeout(deferred.resolve, 500);
+			    return deferred.promise;	
+			}).then(function(s){
+				$(".customDialog").hide();
+				$('body').css({'overflow':'auto'});
+			})
 		}
 	}
 	jQuery(document).ready(function($) {

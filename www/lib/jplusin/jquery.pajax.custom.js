@@ -88,15 +88,25 @@
 			return null;
 		},
 		_load:function(url,isBack){
-			$("#"+defaults.mainContainer).load(url+"."+defaults.suffix);
-			if(isBack){
-				history.pushState({isBack:isBack}, document.title, location.href.split("?")[0] + "?paHref=" + url);
-				//custom
-				$("header .leftBtn .fa-bars").removeClass('fa-bars').addClass('fa-arrow-left');
-			}else{
-				//custom
-				$("header .leftBtn .fa-arrow-left").removeClass('fa-arrow-left').addClass('fa-bars');
-			}
+
+			Q.fcall(function(){
+				$("#"+defaults.mainContainer).hide().removeClass('slideInRight');
+				var deferred = Q.defer();
+			    setTimeout(deferred.resolve, 50);
+			    return deferred.promise;	
+			}).then(function(s){
+				$("#"+defaults.mainContainer).load(url+"."+defaults.suffix).show().addClass('slideInRight');
+				if(isBack){
+					history.pushState({isBack:isBack}, document.title, location.href.split("?")[0] + "?paHref=" + url);
+					//custom
+					$("header .leftBtn .fa-bars").removeClass('fa-bars').addClass('fa-arrow-left');
+				}else{
+					//custom
+					$("header .leftBtn .fa-arrow-left").removeClass('fa-arrow-left').addClass('fa-bars');
+				}
+			})
+			
+			
 		},
 		_back:function(){
 			history.back();

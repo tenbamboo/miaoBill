@@ -29,14 +29,13 @@
 				<a class="rightBtn"></a>
 			</header>
 		</div>
-		<div id="mainContainer">
+		<div id="mainContainer" class="animated">
 		</div>
 		<div class="slideBar animated ">
 			<ul>
 				<li>MiaoBill</li>
-				<li><a><i class="fa fa-calculator"></i>账单</a></li>
-				<li><a><i class="fa fa-bar-chart"></i>图表</a></li>
-				<li><a><i class="fa fa-trash"></i>删除账单</a></li>
+				<li><a pa-href="billList"><i class="fa fa-calculator" ></i>账单</a></li>
+				<li><a pa-href="chartList"><i class="fa fa-bar-chart" ></i>图表</a></li>
 				<li><a><i class="fa fa-cloud-upload"></i>数据同步</a></li>
 				<li><a><i class="fa fa-power-off"></i>退出APP</a></li>
 			</ul>
@@ -54,10 +53,9 @@
 		<script src="./lib/jplusin/jquery.pajax.custom.js"></script>
 		<script src="./lib/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
 		<script src="./lib/bootstrap-datetimepicker/js/bootstrap-datetimepicker.zh-CN.js"></script>
-		 <script src="./lib/hammer/hammer.min.js"></script>
-		 <script src="./lib/hammer/jquery.hammer.js"></script> 
+		<script src="./lib/hammer/hammer.min.js"></script>
+		<script src="./lib/hammer/jquery.hammer.js"></script> 
 		<script src="./lib/iscroll.js"></script>
- <!-- // <script type="text/javascript" src="./lib/jplusin/jquery.touchSwipe.js"></script> -->
 		
 
 
@@ -65,14 +63,9 @@
 			jQuery(document).ready(function($) {
 				Index.initTool();
 				Index.initEvent();
-
-
 			});
 			var Index={
 				initEvent:function(){
-					// $(".overlay").click(function(event) {
-					// 	hideOverlay();
-					// });
 					$("header").delegate('.fa-bars', 'click', function(){
 						Index.showOverlay(false);
 						$(".slideBar").css({'top':document.body.scrollTop}).show().removeClass('slideOutLeft').addClass('slideInLeft');
@@ -80,6 +73,9 @@
 					$("header").delegate('.fa-arrow-left', 'click', function(){
 						$.pajax('back');
 					});
+					$(".slideBar a").click(function(){
+						Index.hideOverlay();
+					})
 				},
 				initTool:function(){
 					$.pajax({

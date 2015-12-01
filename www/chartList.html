@@ -1,0 +1,35 @@
+<div class="container-fluid ">
+	<div style="margin-top: 50px;padding: 50px;">
+		<a class="btn btn-lg btn-primary btn-block" style="margin-bottom: 50px;">账单时间柱状图</a>
+		<a class="btn btn-lg btn-primary btn-block">账单类型饼状图</a>
+	</div>
+		
+</div>
+
+
+<div class=" customDialog animated" id="billDetail">
+	<form>
+
+
+
+	</form>
+	<a id="closeDialog" class="btn btn-default">关闭</a>
+</div>
+
+
+
+<script>
+
+	var ChartList={
+		initHeader:function(){
+			$('header h3').html('我的图表');
+			$('header .rightBtn').html('');
+		},
+	}
+	jQuery(document).ready(function($) {
+		ChartList.initHeader();
+	});
+
+
+
+</script>
