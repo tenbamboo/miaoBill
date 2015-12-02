@@ -11,6 +11,10 @@
 .row{
 	margin: 0;
 }
+.modal-open .animated {
+    -webkit-animation-fill-mode: none;
+    animation-fill-mode: none;
+}
 /*lib override end*/
 /*tools start*/
 .overflow-x-h{
@@ -200,5 +204,6 @@ header .rightBtn{
     z-index: 101;
     background-color: #fff;
     display: none;
+    padding: 10px;
 }
 /*customDialog end*/

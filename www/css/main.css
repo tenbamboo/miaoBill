@@ -82,6 +82,9 @@ body {
 .fr {
   float: right;
 }
+.tc{
+  text-align: center;
+}
 a{
 	text-decoration: none;
 }

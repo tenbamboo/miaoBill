@@ -7,7 +7,7 @@
 	</div>
 	<!-- <div id="billListWrapper"> -->
 	<div class="billListDiv ">
-		<ul class="billList ">
+		<ul class="billList " id="billList">
 			<li>
 				<i class="fa fa-plus-square"></i>
 				<!-- <i class="fa fa-minus-square"></i> -->
@@ -69,7 +69,6 @@
 				</div>
 			</li>
 			<li>
-				<!-- <i class="fa fa-plus-square"></i> -->
 				<i class="fa fa-minus-square"></i>
 				<div class="billName">8000</div>
 				<div class="billTypeAndTime">
@@ -169,8 +168,8 @@
       <div class="modal-body">
        	<form class="form-inline">
 		  <div class="form-group">
-		    <label for="billType">账单类型:</label>
-		    <select class="form-control" id="billType">
+		    <label for="searchBillType">账单类型:</label>
+		    <select class="form-control" id="searchBillType">
 			  <option>1</option>
 			  <option>2</option>
 			  <option>3</option>
@@ -225,109 +224,39 @@
 
 <div class=" customDialog animated" id="billDetail">
 
-	<form>
+	<form class="form-inline" id="billDetailForm">
+		<div class="form-group">
+		    <label for="billType">账单类型:</label>
+		    <select class="form-control" id="billType" name="billType">
+				<option value="1">1</option>
+			</select>
+		</div>
+		<div class="form-group">
+		    <label for="billFlow">账单流向:</label>
+		    <select class="form-control" id="billFlow" name="billFlow">
+		    	<option value="cost">支出</option>
+				<option value="income">收入</option>
+			</select>
+		</div>
+		<div class="form-group">
+		    <label for="billName">账单内容:</label>
+		    <input type="text" class="form-control" name="billName" id="billName"/>
+		</div>
+		<div class="form-group">
+		    <label for="billMoney">金额:</label>
+		    <input type="nubmer" class="form-control" name="billMoney" id="billMoney"/>
+		</div>
+		<div class="form-group tc">
+			<input type="hidden"  name="uuid" id="uuid"/>
+			<a id="submitDialog" class="btn btn-primary btn-lg">提交</a>
+			<a id="closeDialog" class="btn btn-default btn-lg">关闭</a>
+		</div>
 
 
 
 	</form>
-	<a id="closeDialog" class="btn btn-default">关闭</a>
+	
 </div>
 
 
-
-<script>
-
-	var BillList={
-		initHeader:function(){
-			$('header h3').html('我的账单');
-			$('header .rightBtn').html('<i class="fa fa-plus"></i>')
-		},
-		initEvent:function(){
-			// document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
-			$("#billType").change(function(event) {
-				BillList.changeBillType(this);
-			});
-			$("#searchTimeBtn").click(function(){
-				BillList.changeBillTime($("#startDate").val()+"~"+$("#endDate").val())
-			});
-			$(".monthTimeBtn").click(function(){
-				BillList.changeBillTime($(this).html())
-			});
-			$(".billList li").hammer().bind("swipeleft", function (e) {
-				$(".billList li.showDelBtn").removeClass("showDelBtn");
-				$(this).addClass("showDelBtn");
-			}).bind("swiperight", function (e) {
-				$(this).removeClass("showDelBtn");
-			});
-			$(".rightBtn").click(function(){
-				BillList.showCustomDialog();
-				
-			});
-			$("#closeDialog").click(function(){
-				BillList.hideCustomDialog();
-				
-			});
-			
-		},
-		initTool:function(){
-			$('#startDate').datetimepicker({
-		        language:  'zh-CN',
-		        todayBtn:  1,
-				todayHighlight: 1,
-				startView: 3,
-				minView:3,
-				autoclose:true,
-				format:'yyyy-mm'
-		    });
-		    $('#endDate').datetimepicker({
-		        language:  'zh-CN',
-		        todayBtn:  1,
-				todayHighlight: 1,
-				startView: 3,
-				minView:3,
-				autoclose:true,
-				format:'yyyy-mm'
-		    });
-
-		 //    myScroll = new IScroll('.billListDiv', {
-			// 	scrollbars: true,
-			// 	mouseWheel: true,
-			// 	interactiveScrollbars: true,
-			// 	shrinkScrollbars: 'scale',
-			// 	fadeScrollbars: true
-			// });
-		    
-		},
-		changeBillType:function(that){
-			$("#searchBillTypeModal").modal('hide');
-			$("#searchBillType").html($(that).val());
-		},
-		changeBillTime:function(val){
-			$("#searchBillTimeModal").modal('hide');
-			$("#searchBillTime").html(val);
-		},
-		showCustomDialog:function(){
-			$(".customDialog").css({'top':document.body.scrollTop}).show().removeClass('slideOutDown').addClass('slideInUp'); 
-			$('body').css({'overflow':'hidden'});
-		},
-		hideCustomDialog:function(){
-			Q.fcall(function(){
-				$(".customDialog").removeClass('slideInUp').addClass('slideOutDown');
-				var deferred = Q.defer();
-			    setTimeout(deferred.resolve, 500);
-			    return deferred.promise;	
-			}).then(function(s){
-				$(".customDialog").hide();
-				$('body').css({'overflow':'auto'});
-			})
-		}
-	}
-	jQuery(document).ready(function($) {
-		BillList.initHeader();
-		BillList.initTool();
-		BillList.initEvent();
-	});
-
-
-
-</script>
+<script src="./js/billList.js" ></script>

@@ -20,16 +20,17 @@ Dao.prototype={
 		this.schemaBuilder=lf.schema.create(data.schema, 1);
 		//建立表
 		this.schemaBuilder.createTable('tBillType').
-					    addColumn('uuid', lf.Type.STRING).
 					    addColumn('billValue', lf.Type.STRING).
 					    addColumn('billKey', lf.Type.STRING).
-					    addPrimaryKey(['uuid']);
+					    addPrimaryKey(['billValue']);
 		this.schemaBuilder.createTable('tBill').
 					    addColumn('uuid', lf.Type.STRING).
 					    addColumn('billType', lf.Type.STRING).
 					    addColumn('billName', lf.Type.STRING).
+					    addColumn('billFlow', lf.Type.STRING).
 					    addColumn('billTime', lf.Type.DATE_TIME).
-					    addPrimaryKey(['id']);
+					    addColumn('billMoney', lf.Type.NUMBER).
+					    addPrimaryKey(['uuid']);
 		var $this=this;
 		$this.schemaBuilder.connect().then(function(database) {
 			$this.table.tBillType = database.getSchema().table('tBillType');
@@ -38,6 +39,49 @@ Dao.prototype={
 			data.callDone();
     	});
 	},
+	insertBill:function(data){
+		data.uuid=this.getUUID();
+		data.billTime=new Date();
+		var row = this.table.tBill.createRow(data);
+		return this.db.insert().into(this.table.tBill).values([row]).exec();
+	},
+	updateBill:function(data){
+		var t=this.table.tBill;
+		return this.db.update(t)
+		.set(t.billType,data.billType)
+		.set(t.billFlow,data.billFlow)
+		.set(t.billName,data.billName)
+		.set(t.billMoney,data.billMoney)
+		// .set(t.billTime,data.billTime)
+		.where(t.uuid.eq(data.uuid)).exec();
+	},
+	deleteBill:function(uuid){ 
+		return this.db.delete().from(this.table.tBill).where(this.table.tBill.uuid.eq(uuid)).exec();
+	},
+	getBill:function(uuid){ 
+		return this.db.select().from(this.table.tBill).where(this.table.tBill.uuid.eq(uuid)).exec();
+	},
+	getBillList:function(){ 
+		return this.db.select().from(this.table.tBill).exec();
+	},
+
+	getUUID : function() {
+		this.getUUID.random4 = function() {
+			return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
+		};
+		return (this.getUUID.random4() + this.getUUID.random4() + "-" + this.getUUID.random4() + "-" +this.getUUID.random4() + "-" + this.getUUID.random4() + "-" + this.getUUID.random4() + this.getUUID.random4() + this.getUUID.random4());
+	},
+	dropDatabase:function(name){
+		var deleteDbRequest = window.indexedDB.deleteDatabase(name);
+	   deleteDbRequest.onsuccess = function (event) {
+	      console("数据库删除成功");
+	   };
+	   deleteDbRequest.onerror = function (e) {
+	      console("数据库错误： " + e.target.errorCode);
+	   };
+	},
+
+
 	// getAll:function(){ //test pass
 	// 	return this.db.select().from(this.table.student).exec();
 	// },
