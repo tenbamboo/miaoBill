@@ -61,8 +61,22 @@ Dao.prototype={
 	getBill:function(uuid){ 
 		return this.db.select().from(this.table.tBill).where(this.table.tBill.uuid.eq(uuid)).exec();
 	},
-	getBillList:function(){ 
-		return this.db.select().from(this.table.tBill).exec();
+	getBillList:function(pageNumber,condition){ 
+		var pageSize=20;
+		pageNumber=(pageNumber-1) * pageSize;
+
+		console.log("getBillList is start pageNumber="+pageNumber);
+		var table=this.table.tBill;
+		var select=this.db.select().from(table); //from table
+
+		select=select.where(
+			table.billTime.gte( condition.startDate?new Date(condition.startDate+' 00:00:00'):new Date('2015-01-01 00:00:00')),
+			table.billTime.lte( condition.endDate?new Date(condition.endDate+' 23:59:59'):new Date('2015-01-01 23:59:59')),
+			table.billType.eq(  condition.billtype)
+			)
+
+		select=select.limit(pageSize).skip(pageNumber).orderBy(table.billTime, lf.Order.DESC); //page and order by
+		return select.exec();
 	},
 
 	getUUID : function() {

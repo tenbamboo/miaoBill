@@ -90,12 +90,12 @@
 		_load:function(url,isBack){
 
 			Q.fcall(function(){
-				$("#"+defaults.mainContainer).hide().removeClass('slideInRight');
-				var deferred = Q.defer();
-			    setTimeout(deferred.resolve, 50);
-			    return deferred.promise;	
+				$("#"+defaults.mainContainer).hide()//.addClass('animated').removeClass('slideInRight');
+				// var deferred = Q.defer();
+			 //    setTimeout(deferred.resolve, 50);
+			 //    return deferred.promise;	
 			}).then(function(s){
-				$("#"+defaults.mainContainer).load(url+"."+defaults.suffix).show().addClass('slideInRight');
+				$("#"+defaults.mainContainer).load(url+"."+defaults.suffix).show();//.addClass('slideInRight').removeClass('animated');
 				if(isBack){
 					history.pushState({isBack:isBack}, document.title, location.href.split("?")[0] + "?paHref=" + url);
 					//custom

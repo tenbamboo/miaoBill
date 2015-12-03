@@ -132,17 +132,16 @@ header .rightBtn{
 }
 
 .billListDiv{
-/*    position: absolute;
+    position: absolute;
     z-index: 1;
     top: 75px;
     bottom: 0;
     left: 0;
     width: 100%;
     background: #FFF;
-    overflow: hidden;*/
+    overflow: hidden;
 }
 .billList{
-	overflow-y:hidden;
 }
 .billList li{
 	padding: 10px 0;
@@ -163,6 +162,10 @@ header .rightBtn{
     margin: 0 20px;
     color: #93c47d;
 }
+.billList li >.fa-minus-square{
+    color: #CC6868;
+}
+
 .billList li .billName{
 	    margin-top: -2px;
 }
@@ -193,6 +196,56 @@ header .rightBtn{
 }
 .billList li:nth-of-type(odd) {
     background-color: #f9f9f9;
+}
+
+.loading{
+    position: absolute;
+    bottom: -20px;
+    text-align: center;
+    font-size: 20px;
+    height: 20px;
+    color: #1F5788;
+    width: 97%;
+    font-weight: 600;
+    z-index: 2;
+}
+.noMoreData{
+       position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 150px;
+    margin-left: -75px;
+    margin-top: -10px;
+    padding: 10px;
+    background-color: #CC5D73;
+    border: 2px solid #8B9DA9;
+    color: #fff;
+    font-size: 14px;
+    border-radius: 10px;
+    box-shadow: 8px 4px 10px #8B9DA9;
+    font-weight: bold;
+    text-align: center;
+    display: none;
+    z-index: 2;
+}
+.operSuccess{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 110px;
+    margin-left:-55px;
+    margin-top: -10px;
+    padding: 10px;
+    background-color: #93c47d;
+    border: 2px solid #8B9DA9;
+    color: #fff;
+    font-size: 14px;
+    border-radius: 10px;
+    box-shadow: 8px 4px 10px #8B9DA9;
+    font-weight: bold;
+    text-align: center;
+    display: none;
+     z-index: 2;
 }
 /*billList end*/
 /*customDialog start*/
