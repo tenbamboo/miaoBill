@@ -10,14 +10,14 @@ var BillList={
 		 //    
 		 //    });
 			// document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
-			$("#billType").change(function(event) {
+			$("#searchBillTypeSelect").change(function(event) {
 				BillList.changeBillType(this);
 			});
 			$("#searchTimeBtn").click(function(){
-				BillList.changeBillTime($("#startDate").val()+"~"+$("#endDate").val())
+				BillList.changeBillTime("interval");
 			});
 			$(".monthTimeBtn").click(function(){
-				BillList.changeBillTime($(this).html())
+				BillList.changeBillTime("fixed",$(this).html());
 			});
 			$(".billList li").hammer().bind("swipeleft", function (e) {
 				$(".billList li.showDelBtn").removeClass("showDelBtn");
@@ -75,13 +75,54 @@ var BillList={
 		initDOM:function(){
 			BillList.getBillList();
 		},
-		changeBillType:function(that){
-			$("#searchBillTypeModal").modal('hide');
-			$("#searchBillType").html($(that).val());
+		getCondition:function(){
+			return condition={
+				startDate:$('#searchBillTime').attr("data-startDate"),
+				endDate:$('#searchBillTime').attr("data-endDate"),
+				billType:$("#searchBillTypeSelect").attr("data-billType"),
+			}
 		},
-		changeBillTime:function(val){
-			$("#searchBillTimeModal").modal('hide');
+		changeBillType:function(that){
+			$("#searchBillTypeSelect").attr("data-billType",$(that).val());
+			BillList.getBillList(true,true);
+			$("#searchBillTypeModal").modal('hide');
+			$("#searchBillType").html($(that).val()?$(that).val():'账单类型');
+		},
+		changeBillTime:function(flag,val){
+			if(flag=='interval'){  //date interval
+				var sd= new Date(($("#startDate").val()?$("#startDate").val():"2015-01-01")+" 00:00:00"); 
+				var ed=	new Date(($("#endDate").val()?$("#endDate").val():"2015-01-01")+" 23:59:59"); 
+				$("#searchBillTime").attr("data-startDate",sd.getTime());
+				$("#searchBillTime").attr("data-endDate",ed.getTime());
+			}else if(flag=='fixed'){
+				var d=new Date();
+				var sd=new Date(d.getFullYear()+"-"+d.getMonth()+"-"+d.getDate()+" 00:00:00"); // today
+				var ed;
+				if(val=='一个月'){
+					ed=BillList.addMonth(sd,0);
+				}else if(val=='三个月'){
+					ed=BillList.addMonth(sd,2);
+				}else if(val=='六个月'){
+					ed=BillList.addMonth(sd,5);
+				}
+				$("#searchBillTime").attr("data-startDate",sd.getTime());
+				$("#searchBillTime").attr("data-endDate",ed.getTime());
+			}
+
+			BillList.getBillList(true,true);
+
 			$("#searchBillTime").html(val);
+			$("#searchBillTimeModal").modal('hide');
+			
+		},
+		addMonth:function(st,m){
+			var year=st.getFullYear();
+			var month=st.getMonth();
+			if(month+m>11){
+					year++;
+					month=month%11;
+			}
+			return  new Date(year+"-"+(month+1)+"-"+st.getDate()+" 23:59:59"); 
 		},
 		showCustomDialog:function(){
 			$(".customDialog").css({'top':document.body.scrollTop}).show().removeClass('slideOutDown').addClass('slideInUp'); 
@@ -98,16 +139,24 @@ var BillList={
 				$('body').css({'overflow':''});
 			})
 		},
-		getBillList:function(clean){
+		getBillList:function(clean,reload){
 			if(clean){
 				BillList.pageNum=1;
 			}
-			dao.getBillList(BillList.pageNum).then(function(rows){
+			dao.getBillList(BillList.pageNum,BillList.getCondition()).then(function(rows){
 				if(rows.length==0){
+					if(reload){
+						$("#billList li").remove();
+						myScroll.refresh();
+					}
 					BillList.showNoMoreData();
 					BillList.isLoading=false;
 					$(".loading").hide();
-					return ;
+					return;
+				}else if(rows.length < 20){
+					BillList.showNoMoreData();
+					BillList.isLoading=false;
+					$(".loading").hide();
 				}
 				if(clean){
 					$(".loading").show();
@@ -199,4 +248,5 @@ var BillList={
 		BillList.initDOM();
 		BillList.initTool();
 		BillList.initEvent();
+		console.log("BillList is init done");
 	});

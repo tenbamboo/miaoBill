@@ -62,12 +62,13 @@
 
 
 		<script>
-			var dao;
+		var dao;
 			dao=new Dao({
-				schema:'miaoBill'
+				schema:'miaoBill',
+				callDone:function(){Index.initPajax()},
 			});
 			jQuery(document).ready(function($) {
-				Index.initTool();
+				// Index.initTool();
 				Index.initEvent();
 			});
 			var Index={
@@ -83,10 +84,13 @@
 						Index.hideOverlay();
 					})
 				},
-				initTool:function(){
+				initPajax:function(){
 					$.pajax({
 						defaultLoad:'billList'
 					});
+				},
+				initTool:function(){
+					
 				},
 				showOverlay:function(spinnerFlag){
 					if(spinnerFlag){

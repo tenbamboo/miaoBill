@@ -25,12 +25,12 @@
        	<form class="form-inline">
 		  <div class="form-group">
 		    <label for="searchBillType">账单类型:</label>
-		    <select class="form-control" id="searchBillType">
-			  <option>1</option>
-			  <option>2</option>
-			  <option>3</option>
-			  <option>4</option>
-			  <option>5</option>
+		    <select class="form-control" id="searchBillTypeSelect">
+		      <option value=''>请选择</option>
+			  <option value='1'>1</option>
+			  <option value='2'>2</option>
+			  <option value='3'>3</option>
+			  <option value='4'>4</option>
 			</select>
 		  </div>
 		</form>
@@ -47,11 +47,13 @@
        	<form class="form-horizontal">
 		  <div class="form-group">
 		    <label for="startDate" class="col-xs-3" style="line-height: 30px">时间段:</label>
-		    <div class="col-xs-4">
+		    <div class="col-xs-8">
 		    	<input type="text" class="form-control " id="startDate" readonly="readonly"/>
 		    </div>
-		    <span class="col-xs-1" style="line-height: 30px">至</span>
-		    <div class="col-xs-4">
+		  </div>
+		   <div class="form-group">
+		    <span class="col-xs-3" style="line-height: 30px">至</span>
+		    <div class="col-xs-8">
 		    	<input type="text" class="form-control " id="endDate" readonly="readonly"/>
 		    </div>
 		  </div>
@@ -85,6 +87,7 @@
 		    <label for="billType">账单类型:</label>
 		    <select class="form-control" id="billType" name="billType">
 				<option value="1">1</option>
+				<option value="2">2</option>
 			</select>
 		</div>
 		<div class="form-group">

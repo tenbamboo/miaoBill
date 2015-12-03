@@ -69,11 +69,29 @@ Dao.prototype={
 		var table=this.table.tBill;
 		var select=this.db.select().from(table); //from table
 
-		select=select.where(
-			table.billTime.gte( condition.startDate?new Date(condition.startDate+' 00:00:00'):new Date('2015-01-01 00:00:00')),
-			table.billTime.lte( condition.endDate?new Date(condition.endDate+' 23:59:59'):new Date('2015-01-01 23:59:59')),
-			table.billType.eq(  condition.billtype)
-			)
+		if(condition){
+			var s="select=select.where(lf.op.and(";
+			if(condition.startDate){
+				s+="table.billTime.gte( new Date(parseInt(condition.startDate)))";
+			}else{
+				s+="table.billTime.gte( new Date('2015-01-01 00:00:00'))";
+			}
+			if(condition.endDate){
+				s+=",table.billTime.lte( new Date(parseInt(condition.endDate)))";
+			}
+			if(condition.billtype){
+				s+=",table.billType.eq(condition.billtype)";
+			}
+			// "table.billTime.gte( condition.startDate?new Date(condition.startDate+' 00:00:00'):new Date('2015-01-01 00:00:00')),"+
+			// "table.billTime.lte( condition.endDate?new Date(condition.endDate+' 23:59:59'):new Date('2015-01-01 23:59:59')),"+
+			s+="))";
+			eval(s);
+		}
+
+
+
+
+		// select=select.where(table.billTime.gte( new Date('2015-11-30')),
 
 		select=select.limit(pageSize).skip(pageNumber).orderBy(table.billTime, lf.Order.DESC); //page and order by
 		return select.exec();
