@@ -79,8 +79,8 @@ Dao.prototype={
 			if(condition.endDate){
 				s+=",table.billTime.lte( new Date(parseInt(condition.endDate)))";
 			}
-			if(condition.billtype){
-				s+=",table.billType.eq(condition.billtype)";
+			if(condition.billType){
+				s+=",table.billType.eq(condition.billType)";
 			}
 			// "table.billTime.gte( condition.startDate?new Date(condition.startDate+' 00:00:00'):new Date('2015-01-01 00:00:00')),"+
 			// "table.billTime.lte( condition.endDate?new Date(condition.endDate+' 23:59:59'):new Date('2015-01-01 23:59:59')),"+

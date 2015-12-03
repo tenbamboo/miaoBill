@@ -90,28 +90,41 @@ var BillList={
 		},
 		changeBillTime:function(flag,val){
 			if(flag=='interval'){  //date interval
-				var sd= new Date(($("#startDate").val()?$("#startDate").val():"2015-01-01")+" 00:00:00"); 
-				var ed=	new Date(($("#endDate").val()?$("#endDate").val():"2015-01-01")+" 23:59:59"); 
-				$("#searchBillTime").attr("data-startDate",sd.getTime());
-				$("#searchBillTime").attr("data-endDate",ed.getTime());
+				if($("#startDate").val()==''){
+					$("#searchBillTime").attr("data-startDate","");
+				}else{
+					var sd=	new Date($("#startDate").val()+" 00:00:00");
+					$("#searchBillTime").attr("data-startDate",sd.getTime());
+				}
+				if($("#endDate").val()==''){
+					$("#searchBillTime").attr("data-endDate","");
+				}else{
+					var ed=	new Date($("#endDate").val()+" 23:59:59");
+					$("#searchBillTime").attr("data-endDate",ed.getTime());
+				}
+				$("#searchBillTime").html($("#startDate").val()+"~"+$("#endDate").val());
+
 			}else if(flag=='fixed'){
-				var d=new Date();
-				var sd=new Date(d.getFullYear()+"-"+d.getMonth()+"-"+d.getDate()+" 00:00:00"); // today
+				var sd=new Date();
+				sd.setHours(0);
+				sd.setMinutes(0);
+				sd.setSeconds(0);
 				var ed;
 				if(val=='一个月'){
-					ed=BillList.addMonth(sd,0);
+					ed=BillList.addMonth(sd,1);
 				}else if(val=='三个月'){
-					ed=BillList.addMonth(sd,2);
+					ed=BillList.addMonth(sd,3);
 				}else if(val=='六个月'){
-					ed=BillList.addMonth(sd,5);
+					ed=BillList.addMonth(sd,6);
 				}
 				$("#searchBillTime").attr("data-startDate",sd.getTime());
 				$("#searchBillTime").attr("data-endDate",ed.getTime());
+				$("#searchBillTime").html(val);
 			}
 
 			BillList.getBillList(true,true);
 
-			$("#searchBillTime").html(val);
+			
 			$("#searchBillTimeModal").modal('hide');
 			
 		},
@@ -120,9 +133,11 @@ var BillList={
 			var month=st.getMonth();
 			if(month+m>11){
 					year++;
-					month=month%11;
+					month=(month+m)%11;
+			}else{
+				month=month+m
 			}
-			return  new Date(year+"-"+(month+1)+"-"+st.getDate()+" 23:59:59"); 
+			return  new Date(year+"-"+(month)+"-"+st.getDate()+" 23:59:59"); 
 		},
 		showCustomDialog:function(){
 			$(".customDialog").css({'top':document.body.scrollTop}).show().removeClass('slideOutDown').addClass('slideInUp'); 
@@ -144,6 +159,12 @@ var BillList={
 				BillList.pageNum=1;
 			}
 			dao.getBillList(BillList.pageNum,BillList.getCondition()).then(function(rows){
+				if(clean){
+					$(".loading").show();
+					$("#billList li").remove();
+					BillList.isLoading=true;
+				}
+
 				if(rows.length==0){
 					if(reload){
 						$("#billList li").remove();
@@ -154,15 +175,11 @@ var BillList={
 					$(".loading").hide();
 					return;
 				}else if(rows.length < 20){
-					BillList.showNoMoreData();
-					BillList.isLoading=false;
 					$(".loading").hide();
+					BillList.isLoading=false;
+					BillList.showNoMoreData('找到'+rows.length+'条账单，没有更多账单啦');
 				}
-				if(clean){
-					$(".loading").show();
-					$("#billList li").remove();
-					BillList.isLoading=true;
-				}
+				
 				$("#billList").append(template('billList_template',{list:rows}));
 				myScroll.refresh();
 				if(clean){
@@ -210,9 +227,10 @@ var BillList={
 				BillList.getBillList();
 			}
 		},
-		showNoMoreData:function(){
+		showNoMoreData:function(html){
+			 html=html?html:'没有更多账单啦!'
 			Q.fcall(function(){
-				$(".noMoreData").show().removeClass("fadeOutUp").addClass("fadeInUp");
+				$(".noMoreData").html(html).show().removeClass("fadeOutUp").addClass("fadeInUp");
 				var deferred = Q.defer();
 				setTimeout(deferred.resolve, 1500);
 				return deferred.promise;	
