@@ -87,16 +87,9 @@ Dao.prototype={
 			s+="))";
 			eval(s);
 		}
-
-
-
-
-		// select=select.where(table.billTime.gte( new Date('2015-11-30')),
-
 		select=select.limit(pageSize).skip(pageNumber).orderBy(table.billTime, lf.Order.DESC); //page and order by
 		return select.exec();
 	},
-
 	getUUID : function() {
 		this.getUUID.random4 = function() {
 			return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);

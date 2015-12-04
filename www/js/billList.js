@@ -2,14 +2,14 @@ var BillList={
 		pageNum:1,
 		isLoading:true,
 		initHeader:function(){
-			$('header h3').html('我的账单');
+			$('header h3').html('我的账单<i style="padding-left: 5px;" class="fa fa-pencil"></i>');
 			$('header .rightBtn').html('<i class="fa fa-plus"></i>');
 		},
 		initEvent:function(){
 			// $(window).scroll(function(){
 		 //    
 		 //    });
-			// document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+			document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
 			$("#searchBillTypeSelect").change(function(event) {
 				BillList.changeBillType(this);
 			});
@@ -19,13 +19,9 @@ var BillList={
 			$(".monthTimeBtn").click(function(){
 				BillList.changeBillTime("fixed",$(this).html());
 			});
-			$(".billList li").hammer().bind("swipeleft", function (e) {
-				$(".billList li.showDelBtn").removeClass("showDelBtn");
-				$(this).addClass("showDelBtn");
-			}).bind("swiperight", function (e) {
-				$(this).removeClass("showDelBtn");
-			});
+
 			$(".rightBtn").click(function(){
+				BillList.resetForm();
 				BillList.showCustomDialog();
 				
 			});
@@ -36,6 +32,27 @@ var BillList={
 			$("#submitDialog").click(function(){
 				BillList.saveOrUpdateBill();
 			});
+			$("#billList ").delegate('li .delBill', 'click', function(event) {	
+				BillList.showDelBill($(this).parent().attr('data-uuid'));
+				return false;
+			});
+			$("#billList ").delegate('li ', 'click', function(event) {	
+				BillList.showEditBill($(this).attr('data-uuid'));
+			});
+			
+			$("#deleteOper").click(function(){
+				BillList.delBill($(this).attr('data-uuid'));
+			});
+			$("header .fa-pencil").click(function(){
+				if($(".billList li.showDelBtn").length !=0){
+					$(".billList li").removeClass("showDelBtn");
+				}else{
+					$(".billList li").addClass("showDelBtn");
+				}
+				
+			})
+			
+
 			
 		},
 		initTool:function(){
@@ -64,6 +81,8 @@ var BillList={
 				interactiveScrollbars: true,
 				shrinkScrollbars: 'scale',
 				fadeScrollbars: true,
+				click: true,
+
 			});
 		    myScroll.on('scrollEnd', function(){
 		    	if(this.y==this.maxScrollY){
@@ -74,6 +93,30 @@ var BillList={
 		},
 		initDOM:function(){
 			BillList.getBillList();
+		},
+		showEditBill:function(uuid){
+
+			dao.getBill(uuid).then(function(d){
+				BillList.resetForm();
+				$("#billType").val(d[0].billType);
+				$("#billFlow").val(d[0].billFlow);
+				$("#billMoney").val(d[0].billMoney);
+				$("#billName").val(d[0].billName);
+				$("#uuid").val(d[0].uuid);
+				BillList.showCustomDialog();
+			});
+
+		},
+		showDelBill:function(uuid){
+			$("#confirmDialog").modal('show');
+			$("#deleteOper").attr("data-uuid",uuid);
+		},
+		delBill:function(id){
+			dao.deleteBill(id).then(function(){
+				$("#confirmDialog").modal('hide');
+				BillList.getBillList(true);
+				
+			});BillList.showOperSuccess();
 		},
 		getCondition:function(){
 			return condition={
@@ -174,10 +217,11 @@ var BillList={
 					BillList.isLoading=false;
 					$(".loading").hide();
 					return;
-				}else if(rows.length < 20){
+				}
+				else if(rows.length < 20){
 					$(".loading").hide();
-					BillList.isLoading=false;
-					BillList.showNoMoreData('找到'+rows.length+'条账单，没有更多账单啦');
+					// BillList.isLoading=false;
+				// 	BillList.showNoMoreData('找到'+rows.length+'条账单，没有更多账单啦');
 				}
 				
 				$("#billList").append(template('billList_template',{list:rows}));
@@ -185,6 +229,14 @@ var BillList={
 				if(clean){
 					myScroll.scrollTo(0, 0);
 				}
+
+				$(".billList li").hammer().bind("swipeleft", function (e) {
+					$(".billList li.showDelBtn").removeClass("showDelBtn");
+					$(this).addClass("showDelBtn");
+					return false;
+				}).bind("swiperight", function (e) {
+					$(this).removeClass("showDelBtn");
+				});
 			})
 		},
 		saveOrUpdateBill:function(){

@@ -1,59 +1,107 @@
-/*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied.  See the License for the
- * specific language governing permissions and limitations
- * under the License.
- */
-var app = {
-    // Application Constructor
-    initialize: function() {
-        this.bindEvents();
-    },
-    // Bind Event Listeners
-    //
-    // Bind any events that are required on startup. Common events are:
-    // 'load', 'deviceready', 'offline', and 'online'.
-    bindEvents: function() {
-        document.addEventListener('deviceready', this.onDeviceReady, false);
-    },
-    // deviceready Event Handler
-    //
-    // The scope of 'this' is the event. In order to call the 'receivedEvent'
-    // function, we must explicitly call 'app.receivedEvent(...);'
-    onDeviceReady: function() {
-        app.receivedEvent('deviceready');
+var dao;
+			dao=new Dao({
+				schema:'miaoBill',
+				callDone:function(){Index.initPajax()},
+			});
+			jQuery(document).ready(function($) {
+				// Index.initTool();
+				Index.initEvent();
+			});
+			var Index={
+				initEvent:function(){
+					$("header").delegate('.fa-bars', 'click', function(){
+						Index.showOverlay(false);
+						$(".slideBar").css({'top':document.body.scrollTop}).show().removeClass('slideOutLeft').addClass('slideInLeft');
+					});
+					$("header").delegate('.fa-arrow-left', 'click', function(){
+						$.pajax('back');
+					});
+					$(".slideBar a").click(function(){
+						Index.hideOverlay();
+					})
+				},
+				initPajax:function(){
+					$.pajax({
+						defaultLoad:'billList'
+					});
+				},
+				initTool:function(){
+					
+				},
+				showOverlay:function(spinnerFlag){
+					if(spinnerFlag){
+						$(".spinner").show();
+					}
+					$(".overlay").height(document.body.scrollHeight).show();
+					$('body').css({'overflow':'hidden'});
+					$(".overlay").one('click',function(){
+							Index.hideOverlay();
+					});
+				},
+				hideOverlay:function(){
+					$('body').css({'overflow':''})
+					$(".overlay").hide();
+					$(".spinner").hide();
+
+					Q.fcall(function(){
+						$(".slideBar").removeClass('slideInLeft').addClass('slideOutLeft')
+						var deferred = Q.defer();
+					    setTimeout(deferred.resolve, 500);
+					    return deferred.promise;	
+					}).then(function(s){
+						$(".slideBar").hide();
+					})
+				}
+			}
 
 
 
-        // document.addEventListener("backbutton", onBackKeyDown, false);    }    
-        // // Handle the back button    //    
-        // function onBackKeyDown() {    
 
-        // }    
-    },
-    // Update DOM on a Received Event
-    receivedEvent: function(id) {
-        var parentElement = document.getElementById(id);
-        var listeningElement = parentElement.querySelector('.listening');
-        var receivedElement = parentElement.querySelector('.received');
 
-        listeningElement.setAttribute('style', 'display:none;');
-        receivedElement.setAttribute('style', 'display:block;');
+			/** 
+			 * 对日期进行格式化， 
+			 * @param date 要格式化的日期 
+			 * @param format 进行格式化的模式字符串
+			 *     支持的模式字母有： 
+			 *     y:年, 
+			 *     M:年中的月份(1-12), 
+			 *     d:月份中的天(1-31), 
+			 *     h:小时(0-23), 
+			 *     m:分(0-59), 
+			 *     s:秒(0-59), 
+			 *     S:毫秒(0-999),
+			 *     q:季度(1-4)
+			 * @return String
+			 * @author yanis.wang
+			 * @see	http://yaniswang.com/frontend/2013/02/16/dateformat-performance/
+			 */
+			template.helper('dateFormat', function (date, format) {
 
-        console.log('Received Event: ' + id);
-    }
-};
+			    date = new Date(date);
 
-app.initialize();
+			    var map = {
+			        "M": date.getMonth() + 1, //月份 
+			        "d": date.getDate(), //日 
+			        "h": date.getHours(), //小时 
+			        "m": date.getMinutes(), //分 
+			        "s": date.getSeconds(), //秒 
+			        "q": Math.floor((date.getMonth() + 3) / 3), //季度 
+			        "S": date.getMilliseconds() //毫秒 
+			    };
+			    format = format.replace(/([yMdhmsqS])+/g, function(all, t){
+			        var v = map[t];
+			        if(v !== undefined){
+			            if(all.length > 1){
+			                v = '0' + v;
+			                v = v.substr(v.length-2);
+			            }
+			            return v;
+			        }
+			        else if(t === 'y'){
+			            return (date.getFullYear() + '').substr(4 - all.length);
+			        }
+			        return all;
+			    });
+			    return format;
+			});
+
