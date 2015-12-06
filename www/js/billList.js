@@ -1,6 +1,7 @@
 var BillList={
 		pageNum:1,
 		isLoading:true,
+		billTypeSelect:{},
 		initHeader:function(){
 			$('header h3').html('我的账单<i style="padding-left: 5px;" class="fa fa-pencil"></i>');
 			$('header .rightBtn').html('<i class="fa fa-plus"></i>');
@@ -20,13 +21,13 @@ var BillList={
 				BillList.changeBillTime("fixed",$(this).html());
 			});
 
-			$(".rightBtn").click(function(){
+			$(".rightBtn").unbind('click').bind('click',function(){
 				BillList.resetForm();
-				BillList.showCustomDialog();
+				Index.showCustomDialog('billDetail');
 				
 			});
 			$("#closeDialog").click(function(){
-				BillList.hideCustomDialog();
+				Index.hideCustomDialog('billDetail');
 			});
 
 			$("#submitDialog").click(function(){
@@ -51,11 +52,9 @@ var BillList={
 				}
 				
 			})
-			
-
-			
 		},
 		initTool:function(){
+			$(".datetimepicker").remove();
 			$('#startDate').datetimepicker({
 		        language:  'zh-CN',
 		        todayBtn:  1,
@@ -74,6 +73,18 @@ var BillList={
 				autoclose:true,
 				format:'yyyy-mm-dd'
 		    });
+		    $('#billTime').datetimepicker({
+		        language:  'zh-CN',
+		        todayBtn:  1,
+				todayHighlight: 1,
+				startView: 2,
+				minView:2,
+				autoclose:true,
+				format:'yyyy-mm-dd',
+				initialDate:new Date(),
+		    });
+
+		    
 
 		     myScroll = new IScroll('.billListDiv', {
 				scrollbars: true,
@@ -92,7 +103,18 @@ var BillList={
 		    
 		},
 		initDOM:function(){
-			BillList.getBillList();
+			BillList.getBillType();
+			BillList.getBillList(true,true);
+			
+		},
+		getBillType:function(){
+			dao.getBillTypeList().then(function(rows){
+				BillList.billTypeSelect=rows;
+				var html=template('billTypeSelect_template',{list:rows});
+				$("#billType").html(html);
+				$("#searchBillTypeSelect").html(html);
+
+			});
 		},
 		showEditBill:function(uuid){
 
@@ -102,8 +124,9 @@ var BillList={
 				$("#billFlow").val(d[0].billFlow);
 				$("#billMoney").val(d[0].billMoney);
 				$("#billName").val(d[0].billName);
+				$("#billTime").val(Index.formatDate(d[0].billTime,'yyyy-MM-dd'));
 				$("#uuid").val(d[0].uuid);
-				BillList.showCustomDialog();
+				Index.showCustomDialog('billDetail');
 			});
 
 		},
@@ -114,9 +137,13 @@ var BillList={
 		delBill:function(id){
 			dao.deleteBill(id).then(function(){
 				$("#confirmDialog").modal('hide');
-				BillList.getBillList(true);
-				
-			});BillList.showOperSuccess();
+				Index.showGreenMsg();
+				if($(".showDelBtn").length>1){
+					$("#billList li[data-uuid='"+id+"']").remove();
+				}else{
+					BillList.getBillList(true);
+				}
+			});
 		},
 		getCondition:function(){
 			return condition={
@@ -182,21 +209,6 @@ var BillList={
 			}
 			return  new Date(year+"-"+(month)+"-"+st.getDate()+" 23:59:59"); 
 		},
-		showCustomDialog:function(){
-			$(".customDialog").css({'top':document.body.scrollTop}).show().removeClass('slideOutDown').addClass('slideInUp'); 
-			$('body').css({'overflow':'hidden'});
-		},
-		hideCustomDialog:function(){
-			Q.fcall(function(){
-				$(".customDialog").removeClass('slideInUp').addClass('slideOutDown');
-				var deferred = Q.defer();
-			    setTimeout(deferred.resolve, 500);
-			    return deferred.promise;	
-			}).then(function(s){
-				$(".customDialog").hide();
-				$('body').css({'overflow':''});
-			})
-		},
 		getBillList:function(clean,reload){
 			if(clean){
 				BillList.pageNum=1;
@@ -213,15 +225,13 @@ var BillList={
 						$("#billList li").remove();
 						myScroll.refresh();
 					}
-					BillList.showNoMoreData();
+					Index.showRedMsg();
 					BillList.isLoading=false;
 					$(".loading").hide();
 					return;
 				}
 				else if(rows.length < 20){
 					$(".loading").hide();
-					// BillList.isLoading=false;
-				// 	BillList.showNoMoreData('找到'+rows.length+'条账单，没有更多账单啦');
 				}
 				
 				$("#billList").append(template('billList_template',{list:rows}));
@@ -229,6 +239,7 @@ var BillList={
 				if(clean){
 					myScroll.scrollTo(0, 0);
 				}
+				$(".billList li").removeClass("showDelBtn");
 
 				$(".billList li").hammer().bind("swipeleft", function (e) {
 					$(".billList li.showDelBtn").removeClass("showDelBtn");
@@ -239,7 +250,30 @@ var BillList={
 				});
 			})
 		},
+		checkForm:function(){
+
+			if($("#billType").val()==''){
+				Index.showRedMsg('请填写账单类型');
+				return true;
+			}else if($("#billFlow").val()==''){
+				Index.showRedMsg('请填写账单流向');
+				return true;
+			}else if($("#billName").val()==''){
+				Index.showRedMsg('请填写账单内容');
+				return true;
+			}else if($("#billMoney").val()==''){
+				Index.showRedMsg('请填写账单金额');
+				return true;
+			}else if($("#billMoney").val()=='' || !/^[0-9]*$/.test($("#billMoney").val())){
+				Index.showRedMsg('请填写正确的账单金额');
+				return true;
+			}
+			return false;
+		},
 		saveOrUpdateBill:function(){
+			if(BillList.checkForm()){
+				return ;
+			}
 			if($("#billDetailForm #uuid").val()==''){
 				BillList.saveBill();
 			}else{
@@ -248,22 +282,27 @@ var BillList={
 		},
 		saveBill:function(){
 			var data=$("#billDetailForm").serializeJson();
+			data.billMoney=parseFloat(data.billMoney);
+			data.billTime=new Date(data.billTime);
+
 			dao.insertBill(data)
 			.then(function(){
 				BillList.getBillList(true);
-				BillList.hideCustomDialog();
-				BillList.showOperSuccess();
+				Index.hideCustomDialog('billDetail');
+				Index.showGreenMsg();
 			}).catch(function(e){
 				alert('add fail:'+e);
 			});
 		},
 		updateBill:function(){
 			var data=$("#billDetailForm").serializeJson();
+			data.billMoney=parseFloat(data.billMoney);
+			data.billTime=new Date(data.billTime);
 			dao.updateBill(data)
 			.then(function(){
 				BillList.getBillList(true);
-				BillList.hideCustomDialog();
-				BillList.showOperSuccess();
+				Index.hideCustomDialog('billDetail');
+				Index.showGreenMsg();
 			}).catch(function(){
 				alert('add fail');
 			});
@@ -271,6 +310,7 @@ var BillList={
 		resetForm:function(){
 			$("#billDetailForm")[0].reset();
 			$("#billDetailForm #uuid").val('');
+			$("#billTime").val(Index.formatDate(new Date(),'yyyy-MM-dd'));
 		},
 		scrollLoader:function(that){
 			if(BillList.isLoading){
@@ -279,38 +319,6 @@ var BillList={
 				BillList.getBillList();
 			}
 		},
-		showNoMoreData:function(html){
-			 html=html?html:'没有更多账单啦!'
-			Q.fcall(function(){
-				$(".noMoreData").html(html).show().removeClass("fadeOutUp").addClass("fadeInUp");
-				var deferred = Q.defer();
-				setTimeout(deferred.resolve, 1500);
-				return deferred.promise;	
-			}).then(function(){
-				$(".noMoreData").removeClass("fadeInUp").addClass("fadeOutUp");
-				var deferred = Q.defer();
-				setTimeout(deferred.resolve, 500);
-				return deferred.promise;
-			}).then(function(){
-				$(".noMoreData").hide();
-			});
-		},
-		showOperSuccess:function(){
-			Q.fcall(function(){
-				$(".operSuccess").show().removeClass("fadeOutUp").addClass("fadeInUp");
-				var deferred = Q.defer();
-				setTimeout(deferred.resolve, 1500);
-				return deferred.promise;	
-			}).then(function(){
-				$(".operSuccess").removeClass("fadeInUp").addClass("fadeOutUp");
-				var deferred = Q.defer();
-				setTimeout(deferred.resolve, 500);
-				return deferred.promise;
-			}).then(function(){
-				$(".operSuccess").hide();
-			});
-		}
-
 
 	}
 	jQuery(document).ready(function($) {

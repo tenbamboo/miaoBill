@@ -44,6 +44,9 @@
 		<div class="overlay"></div>
 		<i class="fa fa-spinner fa-pulse spinner"></i>
 
+		<div class="redMsg animated ">没有更多信息啦!</div>
+		<div class="operSuccess animated ">操作成功!</div>
+
 		<script src="./js/dao.js"></script>
 		<script src="./js/initApp.js"></script>
 		<script src="./lib/jquery/dist/jquery.js"></script>
@@ -60,6 +63,8 @@
 		<script src="./lib/hammer/hammer.min.js"></script>
 		<script src="./lib/hammer/jquery.hammer.js"></script> 
 		<script src="./lib/iscroll.js"></script>
+
+		<script src="./lib/highCharts/highcharts.js"></script>
 		
 
 
@@ -68,18 +73,30 @@
 				<li data-uuid='{{n.uuid}}'>
 					{{if n.billFlow =='cost'}}
 						<i class="fa fa-minus-square"></i>
+						<div class="billName">{{n.billName}} 支出 {{n.billMoney}} 元</div>
 					{{else}}
 						<i class="fa fa-plus-square"></i>
+						<div class="billName">{{n.billName}} 收入 {{n.billMoney}} 元</div>
 					{{/if}}
-					<div class="billName">{{n.billName}}-{{n.billMoney}}</div>
 					<div class="billTypeAndTime">
-						<div class="fl">{{n.billType}}</div>
+						<div class="fl">{{n.billType | billTypeFormat}}</div>
 						<div class="fr">{{n.billTime | dateFormat:'yyyy-MM-dd'}}</div>
 					</div>
 					<div class="delBill">
 						<i class="fa fa-trash"></i>
 					</div>
 				</li>
+			{{/each}}
+		</script>
+		<script id="billTypeList_template" type="text/html">
+			{{each list as n i}}
+			 	<li data-billValue="{{n.billValue}}">{{n.billKey}}</li>
+			{{/each}}
+		</script>
+		<script id="billTypeSelect_template" type="text/html">
+			<option value=''>请选择</option>
+			{{each list as n i}}
+				<option value="{{n.billValue}}">{{n.billKey}}</option>
 			{{/each}}
 		</script>
 	</body>

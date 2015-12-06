@@ -1,35 +1,37 @@
 <div class="container-fluid ">
 	<div style="margin-top: 50px;padding: 50px;">
-		<a class="btn btn-lg btn-primary btn-block" style="margin-bottom: 50px;">账单时间柱状图</a>
-		<a class="btn btn-lg btn-primary btn-block">账单类型饼状图</a>
+		<a class="btn btn-lg btn-primary btn-block" id="billTimeColumnBtn" style="margin-bottom: 50px;">账单时间柱状图</a>
+		<a class="btn btn-lg btn-primary btn-block" id="billTypePieBtn">账单类型饼状图</a>
 	</div>
 		
 </div>
 
 
-<div class=" customDialog animated" id="billDetail">
-	<form>
+<div class=" customDialog animated " id="pieContainerDiv">
+	<div id="pieContainer" lass="chart"></div>
+	<a class="btn btn-default btn-block closeDialog">关闭</a>
+</div>
 
 
-
+<div class=" customDialog animated" id="columnContainerDiv">
+	<div id="columnContainer" class="chart"></div>
+	<form class="form-horizontal">
+		<div class="form-group">
+		    <label for="startDate" class="col-xs-4" style="line-height: 30px">时间段(步长):</label>
+		    <div class="col-xs-7">
+		    	<select class="form-control " name="" >
+		    		<option value="3,1">3个月(一个月)</option>
+					<option value="6,1">6个月(一个月)</option>
+					<option value="12,1">一年(一个月)</option>
+					<option value="12,2">一年(两个月)</option>
+					<option value="24,4">两年(四个月)</option>
+				</select>
+		    </div>
+		</div>
 	</form>
-	<a id="closeDialog" class="btn btn-default">关闭</a>
+	<a class="btn btn-default btn-block closeDialog">关闭</a>
 </div>
 
 
 
-<script>
-
-	var ChartList={
-		initHeader:function(){
-			$('header h3').html('我的图表');
-			$('header .rightBtn').html('');
-		},
-	}
-	jQuery(document).ready(function($) {
-		ChartList.initHeader();
-	});
-
-
-
-</script>
+<script src="./js/chartList.js"></script>

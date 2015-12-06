@@ -1,11 +1,36 @@
 <div class="container-fluid ">
-	<ul class="list-group">
-	  <li class="list-group-item">Cras justo odio</li>
-	  <li class="list-group-item">Dapibus ac facilisis in</li>
-	  <li class="list-group-item">Morbi leo risus</li>
-	  <li class="list-group-item">Porta ac consectetur ac</li>
-	  <li class="list-group-item">Vestibulum at eros</li>
+	<ul class="typeTag">
 	</ul>
+
+	<div class=" customDialog animated" id="billTypeDetail">
+		<form class="form-inline" id="billTypeDetailForm">
+			<div class="form-group">
+			    <label for="billKey">账单类型:</label>
+			    <input type="text" class="form-control" name="billKey" id="billKey"/>
+			</div>
+			<div class="form-group tc">
+				<input type="hidden"  name="billValue" id="billValue"/>
+				<a id="submitDialog" class="btn btn-primary btn-lg">提交</a>
+				<a id="delBillType" class="btn btn-danger btn-lg" style="display: none;">删除类型</a>
+				<a id="closeDialog" class="btn btn-default btn-lg">关闭</a>
+			</div>
+		</form>
+	</div>
+
+	<div class="modal " id="confirmDialog">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-body">
+	      		<div>确定删除吗?</div>
+	      		<div style='margin: 20px;'>
+	      			<a id="deleteOper" class="btn btn-danger">删除</a>
+	      			<a class="btn btn-default" data-dismiss="modal">取消</a>
+	      		</div>
+	      </div>
+	    </div><!-- /.modal-content -->
+	  </div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
 </div>
+
 
 <script src="./js/billTypeList.js" ></script>

@@ -209,7 +209,7 @@ header .rightBtn{
     font-weight: 600;
     z-index: 2;
 }
-.noMoreData{
+.redMsg{
        position: fixed;
     top: 50%;
     left: 50%;
@@ -226,7 +226,7 @@ header .rightBtn{
     font-weight: bold;
     text-align: center;
     display: none;
-    z-index: 2;
+    z-index: 150;
 }
 .operSuccess{
     position: fixed;
@@ -248,6 +248,26 @@ header .rightBtn{
      z-index: 2;
 }
 /*billList end*/
+/*billTypeList start*/
+ .typeTag{
+
+ }
+ .typeTag li{
+        float: left;
+    padding: 10px;
+    background-color: #2A7EC5   ;
+    margin: 10px;
+    border-radius: 10px;
+    color: #fff;
+ }
+/*billTypeList end*/
+/*chartsList start*/
+.chart{
+    margin-bottom: 15px;
+}
+
+/*chartsList start*/
+
 /*customDialog start*/
 .customDialog{
         width: 100%;

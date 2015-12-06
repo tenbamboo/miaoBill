@@ -41,7 +41,7 @@ Dao.prototype={
 	},
 	insertBill:function(data){
 		data.uuid=this.getUUID();
-		data.billTime=new Date();
+		// data.billTime=new Date();
 		var row = this.table.tBill.createRow(data);
 		return this.db.insert().into(this.table.tBill).values([row]).exec();
 	},
@@ -52,7 +52,7 @@ Dao.prototype={
 		.set(t.billFlow,data.billFlow)
 		.set(t.billName,data.billName)
 		.set(t.billMoney,data.billMoney)
-		// .set(t.billTime,data.billTime)
+		.set(t.billTime,data.billTime)
 		.where(t.uuid.eq(data.uuid)).exec();
 	},
 	deleteBill:function(uuid){ 
@@ -90,6 +90,55 @@ Dao.prototype={
 		select=select.limit(pageSize).skip(pageNumber).orderBy(table.billTime, lf.Order.DESC); //page and order by
 		return select.exec();
 	},
+	getAllBill:function(){
+		var table=this.table.tBill;
+		return this.db.select().from(table).exec();
+	},
+	getBillAnalyzeByColumn:function(date,flow){
+		var tBill=this.table.tBill;
+		return this.db.select(lf.fn.sum(tBill.billMoney).as('sumRow'))
+		      .from(tBill)
+		      .where(lf.op.and(
+		      	 table.billTime.gte(date.startDate))
+		        ,table.billTime.lte(date.endDate)
+		      	,tBill.billFlow.eq(flow)
+		      ))
+		      .exec();
+	},
+	getBillAnalyzeByPie:function(type,flow){
+		var tBill=this.table.tBill;
+		return this.db.select(lf.fn.sum(tBill.billMoney).as('sumRow'))
+		      .from(tBill)
+		      .where(lf.op.and(
+		      	tBill.billType.eq(type)
+		      	,tBill.billFlow.eq(flow)
+		      ))
+		      .exec();
+	},
+	insertBillType:function(data){
+		data.billValue=this.getUUID();
+		var row = this.table.tBillType.createRow(data);
+		return this.db.insert().into(this.table.tBillType).values([row]).exec();
+	},
+	updateBillType:function(data){
+		var t=this.table.tBillType;
+		return this.db.update(t)
+		.set(t.billKey,data.billKey)
+		.where(t.billValue.eq(data.billValue)).exec();
+	},
+	deleteBillType:function(billValue){ 
+		return this.db.delete().from(this.table.tBillType).where(this.table.tBillType.billValue.eq(billValue)).exec();
+	},
+	getBillType:function(billValue){ 
+		return this.db.select().from(this.table.tBillType).where(this.table.tBillType.billValue.eq(billValue)).exec();
+	},
+	getBillTypeList:function(){ 
+		var table=this.table.tBillType;
+		// select=select.limit(pageSize).skip(pageNumber).orderBy(table.billTime, lf.Order.DESC); //page and order by
+		return this.db.select().from(table).exec();
+	},
+
+
 	getUUID : function() {
 		this.getUUID.random4 = function() {
 			return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
@@ -105,28 +154,4 @@ Dao.prototype={
 	      console("数据库错误： " + e.target.errorCode);
 	   };
 	},
-
-
-	// getAll:function(){ //test pass
-	// 	return this.db.select().from(this.table.student).exec();
-	// },
-	// getOne:function(id){ //test pass
-	// 	return this.db.select().from(this.table.student).where(this.table.student.id.eq(id)).exec();
-	// },
-	// insert:function(data){ //test pass
-	// 	var row = this.table.student.createRow(data);
-	// 	return this.db.insert().into(this.table.student).values([row]).exec();
-		
-	// },
-	// update:function(data){
-	// 	var t=this.table.student;
-	// 	return this.db.update(t)
-	// 	.set(t.name,data.name)
-	// 	.set(t.sex,data.sex)
-	// 	.set(t.hobby,data.hobby)
-	// 	.where(t.id.eq(data.id)).exec();
-	// },
-	// delete:function(id){ //test pass
-	// 	return this.db.delete().from(this.table.student).where(this.table.student.id.eq(id)).exec();
-	// }
 }
