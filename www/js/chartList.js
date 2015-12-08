@@ -13,6 +13,9 @@
 				Index.showCustomDialog('columnContainerDiv');
 				ChartList.initColumnChart();
 			});
+			$("#timeStep").change(function(){
+				ChartList.initColumnChart();
+			});
 
 			
 			$(".closeDialog").click(function(event) {
@@ -30,7 +33,7 @@
 		getPieAnalyzeProx:function(){
 			var deferred = Q.defer();
 			ChartList.getPieAnalyze().then(function(data){
-				console.log(data)
+				console.log(data);
 				var sum=data.sum;
 				var array=data.list;
 				var result=[];
@@ -106,7 +109,68 @@
 			    });
 			});
 		},
+		getColumnAnalyzeProx:function(){
+			var deferred = Q.defer();
+			ChartList.getColumnAnalyze().then(function(data){
+				console.log(data);
+			});
+			return deferred.promise;
+		},
+		getColumnAnalyze:function(array){
+			var deferred = Q.defer();
+			var j=0;
+			var date={};
+			var list=[];
+
+			console.log("")
+			var sDate=new Date();
+			sDate.setHours(0);
+			sDate.setMinutes(0);
+			sDate.setSeconds(0);
+			var eDate=new Date();
+			eDate.setHours(23);
+			eDate.setMinutes(59);
+			eDate.setSeconds(59);
+			var dateVal=$("#timeStep").val();
+			var end=dateVal.substring(0,dateVal.indexOf(","));
+			var step=dateVal.substring(dateVal.indexOf(",")+1,dateVal.length);
+			step=parseInt(step);
+			end=parseInt(end);
+			sDate.setMonth(sDate.getMonth()-step);
+			var date={};
+			for(var i=0;i<end;i+=step){
+				date.startDate=sDate ;
+				date.endDate=eDate;
+
+				console.log(Index.formatDate(date.startDate,"yyyy-MM-dd"));
+				console.log(Index.formatDate(date.endDate,"yyyy-MM-dd"));
+
+				dao.getBillAnalyzeByColumn(date,'cost').then(function(data){
+					j+=step;
+					console.log("s:"+data)
+					list.push(data);
+					if(j+step==end){
+						deferred.resolve(list);
+					}
+
+				});
+
+				eDate.setMonth(sDate.getMonth());
+				sDate.setMonth(sDate.getMonth()-step);
+
+			}
+
+
+			// for(var i=0,l=array.length;i<l;i++){
+			// 	date.startDate=array[i].startDate;
+			// 	date.endDate=array[i].endDate;
+
+			// }
+			return deferred.promise;
+		},
 		initColumnChart:function(){
+
+			ChartList.getColumnAnalyzeProx();
 			 $('#columnContainer').highcharts({
 		        chart: {
 		            type: 'column'

@@ -99,11 +99,12 @@ Dao.prototype={
 		return this.db.select(lf.fn.sum(tBill.billMoney).as('sumRow'))
 		      .from(tBill)
 		      .where(lf.op.and(
-		      	 table.billTime.gte(date.startDate))
-		        ,table.billTime.lte(date.endDate)
+		      	tBill.billTime.gte(new Date(date.startDate))
+		       ,tBill.billTime.lte(new Date(date.endDate))
 		      	,tBill.billFlow.eq(flow)
 		      ))
 		      .exec();
+		       
 	},
 	getBillAnalyzeByPie:function(type,flow){
 		var tBill=this.table.tBill;
