@@ -207,7 +207,7 @@ header .rightBtn{
     color: #1F5788;
     width: 97%;
     font-weight: 600;
-    z-index: 2;
+    z-index: 150;
 }
 .redMsg{
        position: fixed;
@@ -228,7 +228,7 @@ header .rightBtn{
     display: none;
     z-index: 150;
 }
-.operSuccess{
+.greenMsg{
     position: fixed;
     top: 50%;
     left: 50%;
@@ -245,7 +245,7 @@ header .rightBtn{
     font-weight: bold;
     text-align: center;
     display: none;
-     z-index: 2;
+     z-index:150;
 }
 /*billList end*/
 /*billTypeList start*/

@@ -264,7 +264,7 @@ var BillList={
 			}else if($("#billMoney").val()==''){
 				Index.showRedMsg('请填写账单金额');
 				return true;
-			}else if($("#billMoney").val()=='' || !/^[0-9]*$/.test($("#billMoney").val())){
+			}else if($("#billMoney").val()=='' || !/^(\d+(\.\d{1,2})?)$/g.test($("#billMoney").val())){
 				Index.showRedMsg('请填写正确的账单金额');
 				return true;
 			}

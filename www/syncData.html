@@ -1,0 +1,26 @@
+<div class="container-fluid ">
+	<div style="margin-top: 50px;padding: 50px;">
+		<a class="btn btn-lg btn-primary btn-block" id="importBtn" style="margin-bottom: 50px;">导入数据</a>
+		<a class="btn btn-lg btn-primary btn-block" id="exportBtn">导出数据</a>
+	</div>
+		
+</div>
+
+
+<div class=" customDialog animated " id="importContainerDiv">
+
+	<a class="btn btn-default btn-block closeDialog">关闭</a>
+</div>
+
+
+<div class=" customDialog animated" id="exportContainerDiv">
+	<textarea style="resize:none;width:100%;padding:10px;margin:10px 3px;height:200px;" readonly="readonly" id="exportArea"></textarea>
+
+
+	<a class="btn btn-primary btn-block " style="margin-bottom: 20px;" id="exportDataBtn">生成并复制json</a>
+	<a class="btn btn-default btn-block closeDialog">关闭</a>
+</div>
+
+
+
+<script src="./js/syncData.js"></script>

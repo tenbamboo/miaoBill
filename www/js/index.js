@@ -18,11 +18,14 @@ var dao;
 					});
 					$(".slideBar a").click(function(){
 						Index.hideOverlay();
+					});
+					$("#exitApp").click(function(){
+						Index.exitApp();
 					})
 				},
 				initPajax:function(){
 					$.pajax({
-						defaultLoad:'chartList'
+						defaultLoad:'syncData'
 					});
 				},
 				initTool:function(){
@@ -52,12 +55,13 @@ var dao;
 						$(".slideBar").hide();
 					})
 				},
-				showRedMsg:function(html){
+				showRedMsg:function(html,tiemout){
 					 html=html?html:'没有更多账单啦!';
+					 tiemout=tiemout?tiemout:1500;
 					Q.fcall(function(){
 						$(".redMsg").html(html).show().removeClass("fadeOutUp").addClass("fadeInUp");
 						var deferred = Q.defer();
-						setTimeout(deferred.resolve, 1500);
+						setTimeout(deferred.resolve, tiemout);
 						return deferred.promise;	
 					}).then(function(){
 						$(".redMsg").removeClass("fadeInUp").addClass("fadeOutUp");
@@ -68,12 +72,13 @@ var dao;
 						$(".redMsg").hide();
 					});
 				},
-				showGreenMsg:function(html){
+				showGreenMsg:function(html,tiemout){
 					html=html?html:'操作成功';
+					tiemout=tiemout?tiemout:1500;
 					Q.fcall(function(){
 						$(".greenMsg").html(html).show().removeClass("fadeOutUp").addClass("fadeInUp");
 						var deferred = Q.defer();
-						setTimeout(deferred.resolve, 1500);
+						setTimeout(deferred.resolve, tiemout);
 						return deferred.promise;	
 					}).then(function(){
 						$(".greenMsg").removeClass("fadeInUp").addClass("fadeOutUp");
@@ -140,6 +145,10 @@ var dao;
 				        return all;
 				    });
 				    return format;
+				},
+				exitApp:function(){
+					// app.exitApp();
+					navigator.device.exitApp();
 				},
 
 				}

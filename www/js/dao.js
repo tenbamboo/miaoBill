@@ -15,9 +15,12 @@ function Dao(data){
 
 Dao.prototype={
 	constructor: Dao,
-	_init:function(data){ //test pass
+	_init:function(option){ //test pass
+
+
+		// this.dropDatabase(option.schema);
 		var deferred = Q.defer();
-		this.schemaBuilder=lf.schema.create(data.schema, 1);
+		this.schemaBuilder=lf.schema.create(option.schema, 2);
 		//建立表
 		this.schemaBuilder.createTable('tBillType').
 					    addColumn('billValue', lf.Type.STRING).
@@ -31,13 +34,76 @@ Dao.prototype={
 					    addColumn('billTime', lf.Type.DATE_TIME).
 					    addColumn('billMoney', lf.Type.NUMBER).
 					    addPrimaryKey(['uuid']);
+		this.schemaBuilder.createTable('tAnalyze').
+		 				addColumn('uuid', lf.Type.STRING).
+		 				addColumn('loginCount', lf.Type.NUMBER).
+		 				addColumn('lastLoginTime', lf.Type.DATE_TIME).
+		 				addPrimaryKey(['uuid']);
 		var $this=this;
 		$this.schemaBuilder.connect().then(function(database) {
 			$this.table.tBillType = database.getSchema().table('tBillType');
 			$this.table.tBill = database.getSchema().table('tBill');
+			$this.table.tAnalyze = database.getSchema().table('tAnalyze');
 			$this.db=database;
-			data.callDone();
+
+
+
+			$this._initApp();
+
+			option.callDone();
     	});
+	},
+	_initApp:function(){
+		var $this=this;
+		$this.getAnalyze().then(function(result){
+			console.log("1111")
+			if(result.length==0){
+
+				//添加账单类型
+				var data={};
+				data.billValue="0001";
+				data.billKey="生活";
+				var tBillType=$this.table.tBillType;
+				var row = tBillType.createRow(data);
+				$this.db.insert().into(tBillType).values([row]).exec();
+
+				 var data={};
+				data.billValue="0002";
+				data.billKey="购物";
+				var row = tBillType.createRow(data);
+				$this.db.insert().into(tBillType).values([row]).exec();
+
+				 var data={};
+				data.billValue="0003";
+				data.billKey="网购";
+				var row = tBillType.createRow(data);
+				$this.db.insert().into(tBillType).values([row]).exec();
+
+				var data={};
+				data.billValue="0004";
+				data.billKey="其他";
+				var row = tBillType.createRow(data);
+				$this.db.insert().into(tBillType).values([row]).exec();
+
+				//添加分析数据
+				var data={};
+				data.uuid=$this.getUUID();
+				data.loginCount=0;
+				data.lastLoginTime=new Date();
+				var row = $this.table.tAnalyze.createRow(data);
+				$this.db.insert().into($this.table.tAnalyze).values([row]).exec();
+			}else{
+				var data={};
+				result=result[0];
+				data.loginCount=result.loginCount+1;
+				data.lastLoginTime=new Date();
+				var t=$this.table.tAnalyze;
+		 		$this.db.update(t)
+				.set(t.loginCount,data.loginCount)
+				.set(t.lastLoginTime,data.lastLoginTime)
+				.where(t.uuid.eq(result.uuid)).exec();
+			}
+		})
 	},
 	insertBill:function(data){
 		data.uuid=this.getUUID();
@@ -96,15 +162,14 @@ Dao.prototype={
 	},
 	getBillAnalyzeByColumn:function(date,flow){
 		var tBill=this.table.tBill;
-		return this.db.select(lf.fn.sum(tBill.billMoney).as('sumRow'))
+		return  this.db.select(lf.fn.sum(tBill.billMoney).as('sumRow'))
 		      .from(tBill)
 		      .where(lf.op.and(
 		      	tBill.billTime.gte(new Date(date.startDate))
-		       ,tBill.billTime.lte(new Date(date.endDate))
+		       ,tBill.billTime.lt(new Date(date.endDate))
 		      	,tBill.billFlow.eq(flow)
 		      ))
 		      .exec();
-		       
 	},
 	getBillAnalyzeByPie:function(type,flow){
 		var tBill=this.table.tBill;
@@ -135,10 +200,11 @@ Dao.prototype={
 	},
 	getBillTypeList:function(){ 
 		var table=this.table.tBillType;
-		// select=select.limit(pageSize).skip(pageNumber).orderBy(table.billTime, lf.Order.DESC); //page and order by
 		return this.db.select().from(table).exec();
 	},
-
+	getAnalyze:function(){
+		return this.db.select().from(this.table.tAnalyze).exec();
+	},
 
 	getUUID : function() {
 		this.getUUID.random4 = function() {
@@ -149,10 +215,10 @@ Dao.prototype={
 	dropDatabase:function(name){
 		var deleteDbRequest = window.indexedDB.deleteDatabase(name);
 	   deleteDbRequest.onsuccess = function (event) {
-	      console("数据库删除成功");
+	      console.log("数据库删除成功");
 	   };
 	   deleteDbRequest.onerror = function (e) {
-	      console("数据库错误： " + e.target.errorCode);
+	      console.log("数据库错误： " + e.target.errorCode);
 	   };
 	},
 }

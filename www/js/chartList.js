@@ -50,7 +50,6 @@
 						deferred.resolve(result);
 					}
 				}
- 				// 
 			});
 			return deferred.promise;
 			
@@ -109,20 +108,13 @@
 			    });
 			});
 		},
-		getColumnAnalyzeProx:function(){
-			var deferred = Q.defer();
-			ChartList.getColumnAnalyze().then(function(data){
-				console.log(data);
-			});
-			return deferred.promise;
-		},
-		getColumnAnalyze:function(array){
+		getColumnAnalyze:function(){
 			var deferred = Q.defer();
 			var j=0;
+			var k=0;
 			var date={};
 			var list=[];
 
-			console.log("")
 			var sDate=new Date();
 			sDate.setHours(0);
 			sDate.setMinutes(0);
@@ -137,18 +129,24 @@
 			step=parseInt(step);
 			end=parseInt(end);
 			sDate.setMonth(sDate.getMonth()-step);
+			
 			var date={};
+			var temp=[];
+			var dateArray=[];
 			for(var i=0;i<end;i+=step){
-				date.startDate=sDate ;
+				date={};
+				date.startDate=sDate;
 				date.endDate=eDate;
-
-				console.log(Index.formatDate(date.startDate,"yyyy-MM-dd"));
-				console.log(Index.formatDate(date.endDate,"yyyy-MM-dd"));
-
+				dateArray.push(Index.formatDate(date.startDate,"yy-MM")+"~"+Index.formatDate(date.endDate,"yy-MM"));
+				
 				dao.getBillAnalyzeByColumn(date,'cost').then(function(data){
 					j+=step;
-					console.log("s:"+data)
-					list.push(data);
+					temp=[];
+					temp.push(dateArray[k]);
+					temp.push(data[0].sumRow);
+					
+					list.push(temp);
+					k++;
 					if(j+step==end){
 						deferred.resolve(list);
 					}
@@ -156,22 +154,16 @@
 				});
 
 				eDate.setMonth(sDate.getMonth());
+				eDate.setFullYear(sDate.getFullYear());
 				sDate.setMonth(sDate.getMonth()-step);
 
 			}
-
-
-			// for(var i=0,l=array.length;i<l;i++){
-			// 	date.startDate=array[i].startDate;
-			// 	date.endDate=array[i].endDate;
-
-			// }
 			return deferred.promise;
 		},
 		initColumnChart:function(){
 
-			ChartList.getColumnAnalyzeProx();
-			 $('#columnContainer').highcharts({
+			ChartList.getColumnAnalyze().then(function(data){
+				 $('#columnContainer').highcharts({
 		        chart: {
 		            type: 'column'
 		        },
@@ -198,22 +190,11 @@
 		            enabled: false
 		        },
 		        tooltip: {
-		            pointFormat: 'Population in 2008: <b>{point.y:.1f} millions</b>'
+		            pointFormat: '支出: <b>{point.y:.2f} 元</b>'
 		        },
 		        series: [{
 		            name: 'Population',
-		            data: [
-		                ['Shanghai', 23.7],
-		                ['Lagos', 16.1],
-		                ['Instanbul', 14.2],
-		                ['Karachi', 14.0],
-		                ['Mumbai', 12.5],
-		                ['Moscow', 12.1],
-		                ['São Paulo', 11.8],
-		                ['Beijing', 11.7],
-		                ['Guangzhou', 11.1],
-		                ['Lima', 8.9]
-		            ],
+		            data: data,
 		            dataLabels: {
 		                enabled: true,
 		                rotation: -90,
@@ -228,6 +209,8 @@
 		            }
 		        }]
 		    });
+			});
+			
 		},
 	}
 	jQuery(document).ready(function($) {
