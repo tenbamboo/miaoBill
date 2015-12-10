@@ -105,7 +105,10 @@ Dao.prototype={
 		})
 	},
 	insertBill:function(data){
-		data.uuid=this.getUUID();
+
+		if(!data.uuid){
+			data.billValue=this.getUUID();
+		}
 		// data.billTime=new Date();
 		var row = this.table.tBill.createRow(data);
 		return this.db.insert().into(this.table.tBill).values([row]).exec();
@@ -181,7 +184,10 @@ Dao.prototype={
 		      .exec();
 	},
 	insertBillType:function(data){
-		data.billValue=this.getUUID();
+		if(!data.uuid){
+			data.billValue=this.getUUID();
+		}
+		
 		var row = this.table.tBillType.createRow(data);
 		return this.db.insert().into(this.table.tBillType).values([row]).exec();
 	},

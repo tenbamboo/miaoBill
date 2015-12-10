@@ -25,7 +25,7 @@ var dao;
 				},
 				initPajax:function(){
 					$.pjax({
-						defaultLoad:'syncData'
+						defaultLoad:'billList'
 					});
 				},
 				initTool:function(){
@@ -147,7 +147,6 @@ var dao;
 				    return format;
 				},
 				exitApp:function(){
-					// app.exitApp();
 					navigator.app.exitApp();
 				},
 
