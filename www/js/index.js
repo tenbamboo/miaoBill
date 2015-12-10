@@ -4,7 +4,7 @@ var dao;
 				callDone:function(){Index.initPajax()},
 			});
 			jQuery(document).ready(function($) {
-				// Index.initTool();
+				Index.initTool();
 				Index.initEvent();
 			});
 			var Index={
@@ -14,22 +14,22 @@ var dao;
 						$(".slideBar").css({'top':document.body.scrollTop}).show().removeClass('slideOutLeft').addClass('slideInLeft');
 					});
 					$("header").delegate('.fa-arrow-left', 'click', function(){
-						$.pajax('back');
+						$.pjax('back');
 					});
 					$(".slideBar a").click(function(){
 						Index.hideOverlay();
 					});
 					$("#exitApp").click(function(){
-						Index.exitApp();
+						app.exitApp();
 					})
 				},
 				initPajax:function(){
-					$.pajax({
+					$.pjax({
 						defaultLoad:'syncData'
 					});
 				},
 				initTool:function(){
-					
+					app.initialize();
 				},
 				showOverlay:function(spinnerFlag){
 					if(spinnerFlag){
@@ -148,7 +148,7 @@ var dao;
 				},
 				exitApp:function(){
 					// app.exitApp();
-					navigator.device.exitApp();
+					navigator.app.exitApp();
 				},
 
 				}

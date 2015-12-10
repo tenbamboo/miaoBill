@@ -1,13 +1,13 @@
 /**
- * @todo pajax  ajax返回上一步
- * @namespace pajax
+ * @todo pjax  ajax返回上一步
+ * @namespace pjax
  * @author haze.liu
  * @since 2015年8月20日 下午2:34:22
  */
 (function($) {
 	/**
 	 * 方法说明<BR>
-	 * load :加载指定页面 当第二个参数为true是代码可以回退  $.pajax('load','demo1',true)  or $.pajax('load','demo1');
+	 * load :加载指定页面 当第二个参数为true是代码可以回退  $.pjax('load','demo1',true)  or $.pjax('load','demo1');
 	 * back :返回上一个页面
 	 */
 
@@ -99,7 +99,7 @@
 		}
 			
 	}
-	$.pajax = function() {
+	$.pjax = function() {
 		var method = arguments[0];
 		if (methods[method]) {
 			method = methods[method];
@@ -107,10 +107,10 @@
 		} else if (typeof (method) == 'object' || !method) {
 			method = methods.init;
 		} else {
-			$.error('Method ' + method + ' does not exist on jQuery.pajax');
+			$.error('Method ' + method + ' does not exist on jQuery.pjax');
 			return this;
 		}
 		return method.apply(this, arguments);
 	};
-	// $.pajax.defaults = {};
+	// $.pjax.defaults = {};
 })(jQuery);

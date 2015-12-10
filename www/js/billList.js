@@ -153,10 +153,20 @@ var BillList={
 			}
 		},
 		changeBillType:function(that){
-			$("#searchBillTypeSelect").attr("data-billType",$(that).val());
-			BillList.getBillList(true,true);
-			$("#searchBillTypeModal").modal('hide');
-			$("#searchBillType").html($(that).val()?$(that).val():'账单类型');
+
+
+			if($(that).val()=='addOne'){
+				$("#searchBillTypeModal").modal('hide');
+				$.pjax('load','billTypeList',true);
+			}else{
+				$("#searchBillTypeSelect").attr("data-billType",$(that).val());
+				BillList.getBillList(true,true);
+				$("#searchBillTypeModal").modal('hide');
+				$("#searchBillType").html($(that).val()?$(that).find('option[value="'+$(that).val()+'"]').html():'账单类型');
+			}
+
+
+			
 		},
 		changeBillTime:function(flag,val){
 			if(flag=='interval'){  //date interval

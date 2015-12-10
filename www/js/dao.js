@@ -56,7 +56,6 @@ Dao.prototype={
 	_initApp:function(){
 		var $this=this;
 		$this.getAnalyze().then(function(result){
-			console.log("1111")
 			if(result.length==0){
 
 				//添加账单类型

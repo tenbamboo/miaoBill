@@ -27,21 +27,35 @@ var app = {
     // 'load', 'deviceready', 'offline', and 'online'.
     bindEvents: function() {
         document.addEventListener('deviceready', this.onDeviceReady, false);
+
+
+
     },
     // deviceready Event Handler
     //
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function() {
+
         app.receivedEvent('deviceready');
 
 
 
-        // document.addEventListener("backbutton", onBackKeyDown, false);    }    
-        // // Handle the back button    //    
+        // document.addEventListener("backbutton", onBackKeyDown, false);        
+        // // // Handle the back button    //    
         // function onBackKeyDown() {    
-
-        // }    
+        //     Index.showGreenMsg('再点击一次退出!');
+        //      document.removeEventListener("backbutton", onBackKeyDown, false); // 注销返回键  
+        //      document.addEventListener("backbutton", app.exitApp, false);//绑定退出事件
+        //      var intervalID = window.setInterval(function() {  
+        //             window.clearInterval(intervalID);  
+        //             document.removeEventListener("backbutton", app.exitApp, false); // 注销返回键  
+        //             document.addEventListener("backbutton", onBackKeyDown, false); // 返回键  
+        //     }, 3000);  
+        // }
+    },
+    exitApp:function(){  
+        navigator.app.exitApp();
     },
     // Update DOM on a Received Event
     receivedEvent: function(id) {
@@ -55,5 +69,3 @@ var app = {
         console.log('Received Event: ' + id);
     }
 };
-
-app.initialize();

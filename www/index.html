@@ -47,6 +47,7 @@
 		<div class="redMsg animated ">没有更多信息啦!</div>
 		<div class="greenMsg animated ">操作成功!</div>
 
+		 <!-- // <script type="text/javascript" charset="utf-8" src="cordova.js"></script> -->
 		<script src="./js/dao.js"></script>
 		<script src="./js/initApp.js"></script>
 		<script src="./lib/jquery/dist/jquery.js"></script>
@@ -55,7 +56,7 @@
 		<script src="./lib/artTemplate/artTemplate.js"></script>
 		<script src="./lib/q.js"></script>
 		<script src="./lib/jplusin/jquery.serializeJson.js"></script>
-		<script src="./lib/jplusin/jquery.pajax.custom.js"></script>
+		<script src="./lib/jplusin/jquery.pjax.custom.js"></script>
 		<script src="./lib/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
 		<script src="./lib/bootstrap-datetimepicker/js/bootstrap-datetimepicker.zh-CN.js"></script>
 		<script src="./js/index.js"></script>
@@ -98,6 +99,7 @@
 			{{each list as n i}}
 				<option value="{{n.billValue}}">{{n.billKey}}</option>
 			{{/each}}
+			<option value='addOne'>添加一条</option>
 		</script>
 	</body>
 
