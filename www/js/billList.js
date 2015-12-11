@@ -62,7 +62,7 @@ var BillList={
 				startView: 2,
 				minView:2,
 				autoclose:true,
-				format:'yyyy-mm-dd'
+				format:'yyyy/mm/dd'
 		    });
 		    $('#endDate').datetimepicker({
 		        language:  'zh-CN',
@@ -71,7 +71,7 @@ var BillList={
 				startView: 2,
 				minView:2,
 				autoclose:true,
-				format:'yyyy-mm-dd'
+				format:'yyyy/mm/dd'
 		    });
 		    $('#billTime').datetimepicker({
 		        language:  'zh-CN',
@@ -80,7 +80,7 @@ var BillList={
 				startView: 2,
 				minView:2,
 				autoclose:true,
-				format:'yyyy-mm-dd',
+				format:'yyyy/mm/dd',
 				initialDate:new Date(),
 		    });
 
@@ -124,7 +124,7 @@ var BillList={
 				$("#billFlow").val(d[0].billFlow);
 				$("#billMoney").val(d[0].billMoney);
 				$("#billName").val(d[0].billName);
-				$("#billTime").val(Index.formatDate(d[0].billTime,'yyyy-MM-dd'));
+				$("#billTime").val(Index.formatDate(d[0].billTime,'yyyy/MM/dd'));
 				$("#uuid").val(d[0].uuid);
 				Index.showCustomDialog('billDetail');
 			});
@@ -182,20 +182,28 @@ var BillList={
 					var ed=	new Date($("#endDate").val()+" 23:59:59");
 					$("#searchBillTime").attr("data-endDate",ed.getTime());
 				}
-				$("#searchBillTime").html($("#startDate").val()+"~"+$("#endDate").val());
+
+				if($("#startDate").val()==''&&$("#endDate").val()==''){
+					$("#searchBillTime").html('账单时间');
+				}else{
+					$("#searchBillTime").html($("#startDate").val()+"~"+$("#endDate").val());
+				}
+
+				
 
 			}else if(flag=='fixed'){
-				var sd=new Date();
-				sd.setHours(0);
-				sd.setMinutes(0);
-				sd.setSeconds(0);
-				var ed;
+				console.log(111)
+				var ed=new Date();
+				ed.setHours(23);
+				ed.setMinutes(59);
+				ed.setSeconds(59);
+				var sd;
 				if(val=='一个月'){
-					ed=BillList.addMonth(sd,1);
+					sd=BillList.addMonth(ed,1);
 				}else if(val=='三个月'){
-					ed=BillList.addMonth(sd,3);
+					sd=BillList.addMonth(ed,3);
 				}else if(val=='六个月'){
-					ed=BillList.addMonth(sd,6);
+					sd=BillList.addMonth(ed,6);
 				}
 				$("#searchBillTime").attr("data-startDate",sd.getTime());
 				$("#searchBillTime").attr("data-endDate",ed.getTime());
@@ -209,15 +217,24 @@ var BillList={
 			
 		},
 		addMonth:function(st,m){
-			var year=st.getFullYear();
-			var month=st.getMonth();
-			if(month+m>11){
-					year++;
-					month=(month+m)%11;
-			}else{
-				month=month+m
-			}
-			return  new Date(year+"-"+(month)+"-"+st.getDate()+" 23:59:59"); 
+
+			var d=new Date();
+			d.setMonth(d.getMonth()-m);
+			d.setFullYear(d.getFullYear());
+			d.setHours(0);
+			d.setMinutes(0);
+			d.setSeconds(0);
+			return d;
+
+			// var year=st.getFullYear();
+			// var month=st.getMonth();
+			// if(month+m>11){
+			// 		year++;
+			// 		month=(month+m)%11;
+			// }else{
+			// 	month=month+m
+			// }
+			// return  new Date(year+"/"+(month)+"/"+st.getDate()+" 23:59:59"); 
 		},
 		getBillList:function(clean,reload){
 			if(clean){
@@ -320,7 +337,7 @@ var BillList={
 		resetForm:function(){
 			$("#billDetailForm")[0].reset();
 			$("#billDetailForm #uuid").val('');
-			$("#billTime").val(Index.formatDate(new Date(),'yyyy-MM-dd'));
+			$("#billTime").val(Index.formatDate(new Date(),'yyyy/MM/dd'));
 		},
 		scrollLoader:function(that){
 			if(BillList.isLoading){

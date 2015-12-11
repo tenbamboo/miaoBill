@@ -107,7 +107,7 @@ Dao.prototype={
 	insertBill:function(data){
 
 		if(!data.uuid){
-			data.billValue=this.getUUID();
+			data.uuid=this.getUUID();
 		}
 		// data.billTime=new Date();
 		var row = this.table.tBill.createRow(data);
@@ -142,7 +142,7 @@ Dao.prototype={
 			if(condition.startDate){
 				s+="table.billTime.gte( new Date(parseInt(condition.startDate)))";
 			}else{
-				s+="table.billTime.gte( new Date('2015-01-01 00:00:00'))";
+				s+="table.billTime.gte( new Date('2015/01/01 00:00:00'))";
 			}
 			if(condition.endDate){
 				s+=",table.billTime.lte( new Date(parseInt(condition.endDate)))";
