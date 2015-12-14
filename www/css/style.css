@@ -209,11 +209,28 @@ header .rightBtn{
     font-weight: 600;
     z-index: 150;
 }
-.redMsg{
-       position: fixed;
+.grayMsg{
+    position: fixed;
     top: 50%;
     left: 50%;
-    width: 150px;
+    margin-left: -75px;
+    margin-top: -10px;
+    padding: 10px;
+    background-color: #949FA7;;
+    border: 2px solid #949FA7;;
+    color: #fff;
+    font-size: 14px;
+    border-radius: 10px;
+    box-shadow: 8px 4px 10px #8B9DA9;
+    font-weight: bold;
+    text-align: center;
+    display: none;
+    z-index: 150;
+}
+.redMsg{
+    position: fixed;
+    top: 50%;
+    left: 50%;
     margin-left: -75px;
     margin-top: -10px;
     padding: 10px;
@@ -232,7 +249,6 @@ header .rightBtn{
     position: fixed;
     top: 50%;
     left: 50%;
-    width: 110px;
     margin-left:-55px;
     margin-top: -10px;
     padding: 10px;

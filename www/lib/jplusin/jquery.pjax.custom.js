@@ -100,19 +100,16 @@
 			}).then(function(s){
 				$("#"+defaults.mainContainer).load(url+"."+defaults.suffix).show();
 				if(isBack){
-					// history.replaceState(null, document.title, location.href.split("?")[0] + "?paHref=" + _methods._getParam('paHref')+"&isBack=true");
-					// history.pushState({},document.title, location.href.split("?")[0] + "?paHref=" + url);
 					history.pushState({},document.title, location.href.split("?")[0] + "?paHref=" + url);
 					//custom
 					$("header .leftBtn .fa-bars").removeClass('fa-bars').addClass('fa-arrow-left');
+					app.addOneBackEvent();
 				}else{
 					//custom
 					$("header .leftBtn .fa-arrow-left").removeClass('fa-arrow-left').addClass('fa-bars');
 					history.pushState({},document.title, location.href.split("?")[0] + "?paHref=" + url);
 				}
-			})
-			
-			
+			});
 		},
 		_back:function(){
 			history.back();
