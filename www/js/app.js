@@ -21,39 +21,25 @@ var app = {
     initialize: function() {
         this.bindEvents();
     },
-    // Bind Event Listeners
-    //
-    // Bind any events that are required on startup. Common events are:
-    // 'load', 'deviceready', 'offline', and 'online'.
     bindEvents: function() {
-        document.addEventListener('deviceready', this.onDeviceReady, false);
+        document.addEventListener('deviceready', app.onDeviceReady, false);
     },
-    // deviceready Event Handler
-    //
-    // The scope of 'this' is the event. In order to call the 'receivedEvent'
-    // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function() {
-        app.receivedEvent('deviceready');
-
-
-
-        // document.addEventListener("backbutton", onBackKeyDown, false);    }    
-        // // Handle the back button    //    
-        // function onBackKeyDown() {    
-
-        // }    
+        document.addEventListener("backbutton", app.onBackEvent, false);
     },
-    // Update DOM on a Received Event
-    receivedEvent: function(id) {
-        var parentElement = document.getElementById(id);
-        var listeningElement = parentElement.querySelector('.listening');
-        var receivedElement = parentElement.querySelector('.received');
-
-        listeningElement.setAttribute('style', 'display:none;');
-        receivedElement.setAttribute('style', 'display:block;');
-
-        console.log('Received Event: ' + id);
-    }
+    onBackEvent:function(){
+        Index.showGreenMsg('再点击一次退出!');
+        document.removeEventListener("backbutton", app.onBackEvent, false); // 注销返回键  
+        document.addEventListener("backbutton", app.exitApp, false);//绑定退出事件
+        var intervalID = window.setInterval(function() {  
+            window.clearInterval(intervalID);  
+            document.removeEventListener("backbutton", app.exitApp, false); // 注销返回键  
+            document.addEventListener("backbutton", app.onBackEvent, false); // 返回键  
+        }, 3000);  
+    },
+    exitApp:function(){
+        navigator.app.exitApp();
+    },
 };
 
 app.initialize();
