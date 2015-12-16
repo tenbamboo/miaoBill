@@ -6,6 +6,7 @@ var app = {
         $(document).bind('deviceready', app.onDeviceReady);
     },
     onDeviceReady: function() {
+        navigator.splashscreen.hide();
         $(document).bind("backbutton", app.onExitEvent);
     },
     onExitEvent:function(){
