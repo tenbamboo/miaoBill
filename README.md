@@ -8,10 +8,8 @@
 自己写的插件： jquery.pjax,jquery.serializeJson
 
 
-下载APP：
+下载APP：https://github.com/tenbamboo/miaoBill/blob/master/miaoBill.apk?raw=true
 
-
-在线演示：
 
 
 功能描述：账单管理，账单类型管理，图表，数据同步
