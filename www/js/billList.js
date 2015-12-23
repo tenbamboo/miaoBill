@@ -51,6 +51,12 @@ var BillList={
 					$(".billList li").addClass("showDelBtn");
 				}
 				
+			});
+			$("#billType").change(function(){
+				if($(this).val()=='addOne'){
+					Index.hideCustomDialog('billDetail');
+					$.pjax('load','billTypeList',true);
+				}
 			})
 		},
 		initTool:function(){
