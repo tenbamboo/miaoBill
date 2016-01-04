@@ -18,6 +18,12 @@ var app = {
             $(document).unbind("backbutton", app.exitApp).bind("backbutton", app.onExitEvent);
         }, 2000);  
     },
+    addOneBackEventForFun:function(fun){
+        $(document).unbind("backbutton", app.onExitEvent).bind("backbutton", function(){
+            fun();
+            $(document).unbind("backbutton", app.onBackEvent).bind("backbutton", app.onExitEvent);
+        });
+    },
     addOneBackEvent:function(){
         $(document).unbind("backbutton", app.onExitEvent).bind("backbutton", app.onBackEvent);
     },

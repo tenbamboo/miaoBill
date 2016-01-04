@@ -23,6 +23,12 @@ var Index = {
 		});
 		$("#exitApp").click(function() {
 			app.exitApp();
+		});
+		$('body').delegate('.modal','show.bs.modal', function (e) {
+			var that=this;
+			app.addOneBackEventForFun(function(){
+				$(that).modal('hide');
+			})
 		})
 	},
 	initPajax: function() {
@@ -41,6 +47,7 @@ var Index = {
 		$('body').css({
 			'overflow': 'hidden'
 		});
+		app.addOneBackEventForFun(Index.hideOverlay);
 		$(".overlay").one('click', function() {
 			Index.hideOverlay();
 		});
@@ -118,6 +125,9 @@ var Index = {
 		}).show().removeClass('slideOutDown').addClass('slideInUp');
 		$('body').css({
 			'overflow': 'hidden'
+		});
+		app.addOneBackEventForFun(function(){
+			Index.hideCustomDialog(id);
 		});
 	},
 	hideCustomDialog: function(id) {

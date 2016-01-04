@@ -1,3 +1,6 @@
+
+0.替换res文件！！！！！
+
 1.生成证书命令
 keytool -genkey -v -keystore miaoBill.keystore -alias miaoBill -keyalg RSA -validity 365
 
